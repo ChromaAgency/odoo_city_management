@@ -14,6 +14,7 @@
     """,
     # data files always loaded at installation
     'data': [
+        'data/mail.template.xml',
         'data/city.report.xml',
         'data/city.report.category.xml',
         'data/city.report.cancel_reason.xml',
