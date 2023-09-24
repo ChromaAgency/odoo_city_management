@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="city_report_cancel_reason_action" model="ir.actions.act_window">
+        <field name="name">Razones de cancelación</field>
+        <field name="res_model">city.report.cancel_reason</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        id="city_report_cancel_reason_menu"
+        name="Razón de cancelación"
+        action="city_report_cancel_reason_action"
+        parent="city_report_menu"
+        sequence="10"/>
+    
+
+</odoo>

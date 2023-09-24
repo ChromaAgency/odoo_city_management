@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- <record id="city_report_category_view_search" model="ir.ui.view">
+        <field name="name">city.report.category.view.search</field>
+        <field name="model">city.report.category</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="name" />
+                <field name="code" />
+                <field name="user_id" />
+                <filter name="no_parent_id" string="Category" domain="[('parent_id','=',False)]"/>
+                <filter name="parent_id" string="Subcategory" domain="[('parent_id','!=',False)]"/>\
+                <filter name="groupby_user_id" string="User" context="{'group_by': 'user_id'}" />
+                <filter name="groupby_parent_id" string="Parent" context="{'group_by': 'parent_id'}" />
+            </search>
+        </field>
+    </record> -->
+    <record id="city_report_category_view_tree" model="ir.ui.view">
+        <field name="name">city.report.category.view.tree</field>
+        <field name="model">city.report.category</field>
+        <field name="arch" type="xml">
+            <tree string="" editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="code" />
+                <field name="parent_id" domain="[('parent_id','=',False)]"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

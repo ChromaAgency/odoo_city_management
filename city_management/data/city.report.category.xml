@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="city_report_category_action" model="ir.actions.act_window">
+        <field name="name">Categorias de reporte</field>
+        <field name="res_model">city.report.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        id="city_report_category_menu"
+        name="Categorias"
+        action="city_report_category_action"
+        parent="city_report_menu"
+        sequence="10"/>
+    
+
+</odoo>

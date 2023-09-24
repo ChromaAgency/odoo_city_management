@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="city_report_cancel_reason_wizard_view_form" model="ir.ui.view">
+        <field name="name">city.report.cancel_reason.wizard.view.form</field>
+        <field name="model">city.report.cancel_reason.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="cancel_reason_id" />
+                        <field name="report_id" invisible="1" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                    <button string="Confirm" name="cancel_report" type="object" class="btn-primary" />
+                </footer>
+                
+            </form>
+        </field>
+    </record>
+
+</odoo>

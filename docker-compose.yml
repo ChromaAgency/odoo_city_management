@@ -1,0 +1,29 @@
+version: '3.1'
+services:
+  city_management-web:
+    image: odoo:16.0
+    depends_on:
+      - city_management-db
+    ports:
+      - "8088:8069"
+    environment:
+      - HOST=city_management-db
+      - USER=odoo
+      - PASSWORD=myodoo
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./:/mnt/extra-addons
+    command: odoo --dev all,xml,reload --addons-path=/mnt/extra-addons --db-filter=city_management
+    restart: always
+  city_management-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=myodoo
+      - POSTGRES_USER=odoo  
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+volumes:
+  odoo-web-data:
+  odoo-db-data:

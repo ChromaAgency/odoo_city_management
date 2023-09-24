@@ -1,0 +1,29 @@
+{
+    'name': 'City management',
+    'category': 'Sale',
+    'summary': 'Odoo module to manage cities.',
+    'version': '1.0',
+    'depends': ['base', 'mail'],
+    'author': 'Chroma.',
+    'website': 'https://www.chroma.agency',
+    'maintainer': 'Chroma.',
+    'application': True,
+
+    'description': """
+    Description text
+    """,
+    # data files always loaded at installation
+    'data': [
+        'data/city.report.xml',
+        'data/city.report.category.xml',
+        'data/city.report.cancel_reason.xml',
+        'views/city.report.xml',
+        'views/city.report.category.xml',
+        'security/ir.model.access.csv',
+
+        'wizards/city_report_cancel_wizard.xml',
+    ],
+    # data files containing optionally loaded demonstration data
+    'demo': [
+    ],
+}
