@@ -1,8 +1,12 @@
+from odoo.api import model
 from odoo.models import Model
 from odoo.fields import Char, Text, Integer, Date, Selection, Many2one, One2many, Boolean
 from odoo import api, fields, models, _
 import random
 import string
+import logging
+
+_logger = logging.getLogger(__name__)
 
 REPORT_STATES = [
     ("draft", _("Draft")),
@@ -25,7 +29,10 @@ def get_random_string_with(func, length):
 
 def get_name_with_rand_letters_and_numbers(rand_numbers:int=3,rand_letters:int=4 ):
     return f"{get_random_string_with(get_random_number, length=rand_numbers)}{get_random_string_with(get_random_letter, length=rand_letters)}"
-
+def get_vals_as_list(vals):
+    if isinstance(vals, dict):
+        vals = [vals]
+    return vals
 class CityReport(Model):
     _name = "city.report"
     _description = _("City Reports")
@@ -41,6 +48,7 @@ class CityReport(Model):
     cancel_reason = Many2one(comodel_name="city.report.cancel_reason", string=_("Cancel Reason"), copy=False)
     category_id = Many2one(comodel_name="city.report.category", string=_("Category"), copy=False, related="subcategory_id.parent_id", store=True)
     subcategory_id = Many2one(comodel_name="city.report.category", string=_("Sub-Category"), copy=False)
+    user_id = Many2one(comodel_name="res.users", string=_("Usuario responsable"), copy=False)
     progress = Integer(string=_("Progress"), copy=False)
     state_log_ids = One2many(comodel_name="city.report.state.log", inverse_name="report_id", string=_("State Logs"), copy=False)
 
@@ -80,9 +88,39 @@ class CityReport(Model):
         return self._trigger_cancel_wizard("rejected")
 
     def _generate_log(self, state):
-        self.state_log_ids = [(0, 0, {"state": state})]
+        return [(0, 0, {"state": state})]
 
+    def _generate_log_from_vals(self, vals):
+        vals = get_vals_as_list(vals)
+        for val in vals:
+            if "state" in val:
+                val['state_log_ids'] = self._generate_log(val["state"])
+        return vals
+
+    def _get_vals_with_user_id(self, vals):
+        vals = get_vals_as_list(vals)
+        for val in vals:
+            if "subcategory_id" in val:
+                val["user_id"] = self.env['city.report.category'].browse(val["subcategory_id"]).user_id.id
+        return vals
+    
+    def _send_new_report_email(self):
+        template = self.env.ref("city_management.send_mail_to_user")
+        template.send_mail(self.id, force_send=True)
+
+    @model
+    def create(self, vals):
+        vals = self._get_vals_with_user_id(vals)
+        vals = self._generate_log_from_vals(vals)
+        if "state" in vals and vals["state"] == "pending":
+            self._send_new_report_email()
+        return super().create(vals)
+    
     def write(self, vals):
-        if 'state' in vals:
-            self._generate_log(vals['state'])
+        vals = self._get_vals_with_user_id(vals)
+        vals = self._generate_log_from_vals(vals)
+        # Vals is a list of dicts, we only need the first one on write
+        vals = vals[0]
+        if "state" in vals and vals["state"] == "pending":
+            self._send_new_report_email()
         return super().write(vals)
