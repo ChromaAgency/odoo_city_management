@@ -14,8 +14,8 @@ class CategoriesController(Controller):
         return request.env['ir.config_parameter'].sudo().get_param('web.base.url')
 
     @route(f"{CHATBOT_OPTIONS_URL}/report/<int:report_id>/geocode_address", type='http', auth='none', methods=['GET'], csrf=False, cors="*")
-    def geocode_get_address(self, name, category_id=False):
-        report = request.env['city.report'].sudo().search_read([('name', '=', name)], ["geocoding_display_name"], limit=1)
+    def geocode_get_address(self, report_id):
+        report = request.env['city.report'].sudo().browse([int(report_id)]).read(["geocoding_display_name"])
         if report:
             response_body = {
                 "result": report[0]["geocoding_display_name"],
