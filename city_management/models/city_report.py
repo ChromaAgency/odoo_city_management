@@ -41,6 +41,8 @@ class CityReport(Model):
     name = Char(string=_("Name"), required=True, copy=False)
     partner_id = Many2one(comodel_name="res.partner", string=_("Partner"))
     report_address = Char(string=_("Report Address"), copy=False)
+    report_latitude = Char(string=_("Report Latitude"), copy=False)
+    report_longitude = Char(string=_("Report Longitude"), copy=False)
     mobile = Char(string=_("Report mobile"))
     note = Char(string=_("Notas"), copy=False)
     user_attachment_link = Char(string=_("Link Imagen del Reporte"), copy=False)
