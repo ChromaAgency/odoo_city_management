@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <data noupdate="1">
+    <record id="module_category_city_report" model="ir.module.category">
+            <field name="name"> Reportes de la ciudad</field>
+            <field name="description">Permisos para los reportes de la ciudad. </field>
+            <field name="sequence">1</field>
+        </record>
+  </data>
+
+</odoo>

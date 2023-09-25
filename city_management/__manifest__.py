@@ -20,6 +20,9 @@
         'data/city.report.cancel_reason.xml',
         'views/city.report.xml',
         'views/city.report.category.xml',
+        'security/ir.module.category.xml',
+        'security/res.groups.xml',
+        'security/ir.rule.xml',
         'security/ir.model.access.csv',
 
         'wizards/city_report_cancel_wizard.xml',
