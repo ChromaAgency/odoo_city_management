@@ -16,7 +16,7 @@ class CategoriesController(Controller):
     def base_url(self):
         return request.env['ir.config_parameter'].sudo().get_param('web.base.url')
 
-    @route(f"{BASE_URL}/geocode_address", type='http', auth='none', methods=['GET'], csrf=False, cors="*")
+    @route(f"{BASE_URL}/geocode_address", type='http', auth='none', methods=['POST'], csrf=False, cors="*")
     def geocode_by_address(self):
         data = json.loads(request.httprequest.data)
         geocoder_strategy = self.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_strategy", "heremaps")
