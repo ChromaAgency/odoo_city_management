@@ -24,9 +24,9 @@ class GeocodeController(Controller):
         apikey = request.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_apikey", HERE_APIKEY)
         maps:BaseMaps = maps_constructor(apikey=apikey)
         geocode_response = maps.geocode_request(data["report_address"])
-        return {
+        return Response(json.dumps({
             "result": geocode_response["display_name"]
-        }
+        }), status=200)
 
 
     @route(f"{CHATBOT_OPTIONS_URL}/report/<int:report_id>/geocode_address", type='http', auth='none', methods=['GET'], csrf=False, cors="*")
