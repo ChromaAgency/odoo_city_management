@@ -2,6 +2,9 @@ from odoo.http import request, Response, Controller, route
 import logging
 import json
 
+from city_management_maps.utils.basemaps import BaseMaps
+from city_management_maps.utils.maps import GEOCODER_STRATEGIES, HERE_APIKEY
+
 _logger = logging.getLogger(__name__)
 
 BASE_URL = '/city_management'
@@ -12,6 +15,19 @@ class CategoriesController(Controller):
     @property
     def base_url(self):
         return request.env['ir.config_parameter'].sudo().get_param('web.base.url')
+
+    @route(f"{BASE_URL}/geocode_address", type='http', auth='none', methods=['GET'], csrf=False, cors="*")
+    def geocode_by_address(self):
+        data = json.loads(request.httprequest.data)
+        geocoder_strategy = self.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_strategy", "heremaps")
+        maps_constructor = GEOCODER_STRATEGIES[geocoder_strategy]
+        apikey = self.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_apikey", HERE_APIKEY)
+        maps:BaseMaps = maps_constructor(apikey=apikey)
+        geocode_response = maps.geocode_request(data["report_address"])
+        return {
+            "result": geocode_response["display_name"]
+        }
+
 
     @route(f"{CHATBOT_OPTIONS_URL}/report/<int:report_id>/geocode_address", type='http', auth='none', methods=['GET'], csrf=False, cors="*")
     def geocode_get_address(self, report_id):

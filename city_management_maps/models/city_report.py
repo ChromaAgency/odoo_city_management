@@ -7,19 +7,13 @@ import random
 import string
 import logging
 
-from ..utils.basemaps import BaseMaps
+from ..utils.maps import GEOCODER_STRATEGIES, HERE_APIKEY
 
-from ..utils.heremaps import HereMapsV6
-from ..utils.googlemaps import GoogleMaps
+from ..utils.basemaps import BaseMaps
 _logger = logging.getLogger(__name__)
 
 
-GEOCODER_STRATEGIES = {
-    "heremaps": HereMapsV6,
-    "google": GoogleMaps,
-}
-GMAPS_APIKEY = "AIzaSyAHFy7TrD_oP4iNpYCUUFaY1zNxILLiyDI"
-HERE_APIKEY = "xfzfeKOx1N-e9REDAG28EVOS7XWfLUUFe78aGBJUiiY"
+
 class CityReport(Model):
     _inherit = "city.report"
 
