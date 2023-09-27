@@ -2,8 +2,8 @@ from odoo.http import request, Response, Controller, route
 import logging
 import json
 
-from city_management_maps.utils.basemaps import BaseMaps
-from city_management_maps.utils.maps import GEOCODER_STRATEGIES, HERE_APIKEY
+from ..utils.basemaps import BaseMaps
+from ..utils.maps import GEOCODER_STRATEGIES, HERE_APIKEY
 
 _logger = logging.getLogger(__name__)
 
