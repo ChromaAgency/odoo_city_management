@@ -20,10 +20,11 @@ class GeocodeController(Controller):
     def geocode_by_address(self):
         data = json.loads(request.httprequest.data)
         geocoder_strategy = request.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_strategy", "heremaps")
+        default_address = request.env["ir.config_parameter"].sudo().get_param("city_management_maps.default_address", "Irapuato, Guanajuato, Mexico")
         maps_constructor = GEOCODER_STRATEGIES[geocoder_strategy]
         apikey = request.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_apikey", HERE_APIKEY)
         maps:BaseMaps = maps_constructor(apikey=apikey)
-        geocode_response = maps.geocode_request(data["report_address"])
+        geocode_response = maps.geocode_request(f'{data["report_address"]}{default_address}')
         return Response(json.dumps({
             "result": geocode_response["display_name"]
         }), status=200)
