@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 
 BASE_URL = '/city_management'
 CHATBOT_OPTIONS_URL = f'{BASE_URL}/chatbot_options'
-class CategoriesController(Controller):   
+class GeocodeController(Controller):   
 
     
     @property
@@ -19,9 +19,9 @@ class CategoriesController(Controller):
     @route(f"{BASE_URL}/geocode_address", type='http', auth='none', methods=['POST'], csrf=False, cors="*")
     def geocode_by_address(self):
         data = json.loads(request.httprequest.data)
-        geocoder_strategy = self.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_strategy", "heremaps")
+        geocoder_strategy = request.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_strategy", "heremaps")
         maps_constructor = GEOCODER_STRATEGIES[geocoder_strategy]
-        apikey = self.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_apikey", HERE_APIKEY)
+        apikey = request.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_apikey", HERE_APIKEY)
         maps:BaseMaps = maps_constructor(apikey=apikey)
         geocode_response = maps.geocode_request(data["report_address"])
         return {
