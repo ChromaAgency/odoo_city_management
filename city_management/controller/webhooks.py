@@ -59,5 +59,5 @@ class WebhookController(Controller):
         except KeyError:
             _logger.error(f"Webhook action {action} not found")
             return Response("Action not defined", status=500)
-        
+        _logger.info(response)
         return Response(json.dumps(response), status=200)
