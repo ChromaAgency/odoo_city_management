@@ -1,10 +1,13 @@
+import base64
 from odoo.api import model
 from odoo.models import Model
-from odoo.fields import Char, Text, Integer, Date, Selection, Many2one, One2many, Boolean
-from odoo import api, fields, models, _
+from odoo.fields import Binary, Char, Integer, Selection, Many2one, One2many
+from odoo import  _
 import random
 import string
 import logging
+from urllib.parse import urlparse
+import requests
 
 _logger = logging.getLogger(__name__)
 
@@ -45,7 +48,9 @@ class CityReport(Model):
     report_longitude = Char(string=_("Report Longitude"), copy=False)
     mobile = Char(string=_("Report mobile"))
     note = Char(string=_("Notas"), copy=False)
-    user_attachment_link = Char(string=_("Link Imagen del Reporte"), copy=False)
+    user_attachment_link = Char(string=_("Link Imagen del Reporte"), compute="_compute_user_attachment_link", inverse="_inverse_user_attachment_link", copy=False)
+    user_attachment_filename = Char(string=_("Nombre del archivo"), copy=False)
+    user_attachment = Binary(string=_("Link Imagen del Reporte"), copy=False)
     state = Selection(REPORT_STATES, default="draft", copy=False)
     cancel_reason = Many2one(comodel_name="city.report.cancel_reason", string=_("Cancel Reason"), copy=False)
     category_id = Many2one(comodel_name="city.report.category", string=_("Category"), copy=False, related="subcategory_id.parent_id", store=True)
@@ -53,6 +58,20 @@ class CityReport(Model):
     user_id = Many2one(comodel_name="res.users", string=_("Usuario responsable"), copy=False)
     progress = Integer(string=_("Progress"), copy=False)
     state_log_ids = One2many(comodel_name="city.report.state.log", inverse_name="report_id", string=_("State Logs"), copy=False)
+
+    def _compute_user_attachment_link(self):
+        for rec in self:
+            if rec.user_attachment:
+                rec.user_attachment_link = f""
+            else:
+                rec.user_attachment_link = False
+
+    def _inverse_user_attachment_link(self):
+        for rec in self:
+            if rec.user_attachment_link:
+                url = rec.user_attachment_link
+                rec.user_attachment_filename = urlparse(url).path.split("/")[-1]
+                rec.user_attachment = self.fetch_image_from_url(url)
 
     def default_get(self, fields_list):
         vals = super().default_get(fields_list)
@@ -128,3 +147,22 @@ class CityReport(Model):
         if "state" in vals and vals["state"] == "pending":
             self._send_new_report_email()
         return super().write(vals)
+
+
+    def fetch_image_from_url(self, url):
+        """
+        Gets an image from a URL and converts it to an Odoo friendly format
+        so that we can store it in a Binary field.
+        :param url: The URL to fetch.
+        :return: Returns a base64 encoded string.
+        """
+        data = ''
+
+        try:
+   
+            data = base64.b64encode(requests.get(url.strip()).content).replace(b'\n', b'')
+        except Exception as e:
+            _logger.warn('There was a problem requesting the image from URL %s' % url)
+            logging.exception(e)
+
+        return data

@@ -79,7 +79,9 @@
                         </group>
                         <group name="write_date">
                             <field name="write_date" />
-                            <field name="user_attachment_link"  widget="binary"/>
+                            <field name="user_attachment_link" />
+                            <field name="user_attachment_filename" invisible="1"/>
+                            <field name="user_attachment"  filename="user_attachment_filename" />
                         </group>
                     </group>
                     <notebook>
