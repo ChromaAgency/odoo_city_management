@@ -37,12 +37,12 @@ class HereMapsV6(BaseMaps):
             "latitude": position["Latitude"],
             "longitude": position["Longitude"],
             "display_name": address["Label"],
-            "street": address["Street"],
-            "street_number": address["HouseNumber"],
-            "city": address["City"],
-            "state": address["State"],
-            "country": address["Country"],
-            "zip_code": address["PostalCode"],
+            "street": address.get("Street"),
+            "street_number": address.get("HouseNumber"),
+            "city": address.get("City"),
+            "state": address.get("State"),
+            "country": address.get("Country"),
+            "zip_code": address.get("PostalCode"),
         }
         
         
