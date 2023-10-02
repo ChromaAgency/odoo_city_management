@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="whatsapp_account_view_form" model="ir.ui.view">
+        <field name="name">whatsapp.account.view.form</field>
+        <field name="model">whatsapp.account</field>
+        <field name="arch" type="xml">
+            <form string="Configuración whatsapp">
+                <sheet>
+                    <div class="oe_title" id='title'>
+                        <label for="name" string="Name"/>
+                        <h1 id="name"><field name="name" required="1" placeholder="Referencia"/></h1>
+                    </div>
+                    <field name="active" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="phone_uid" required="1" placeholder="12345678901"/>
+                            <field name="account_uid" placeholder="1234567890"/>
+                        </group>
+                        <group>
+                           <field name="token"  placeholder="UIIUADAIUSDIUASUI"/>
+                        
+                            <field name="app_secret"  placeholder="123123ADSASHJDA"/>
+                       
+                            <field name="app_uid" placeholder="1234567890"/>
+                        </group>
+                        <button name="button_test_connection" type="object" string="Probar conexión" class="btn-link "/>
+                    </group>
+                    
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="whatsapp_account_view_tree" model="ir.ui.view">
+        <field name="name">whatsapp.account.view.tree</field>
+        <field name="model">whatsapp.account</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="phone_uid"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

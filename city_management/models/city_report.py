@@ -114,9 +114,10 @@ class CityReport(Model):
     def create(self, vals):
         vals = self._get_vals_with_user_id(vals)
         vals = self._generate_log_from_vals(vals)
+        recs = super().create(vals)
         if "state" in vals and vals["state"] == "pending":
-            self._send_new_report_email()
-        return super().create(vals)
+            recs._send_new_report_email()
+        return recs
     
     def write(self, vals):
         vals = self._get_vals_with_user_id(vals)
