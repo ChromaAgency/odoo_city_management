@@ -18,13 +18,14 @@ class CategoriesController(Controller):
     @route(f"{BASE_URL}/report/name/<name>", type='http', auth='none', methods=['GET'], csrf=False, cors="*")
     def geocode_get_address(self, name):
         CityReport = request.env['city.report'].sudo()
-        report = CityReport.search_read([('name', '=', name)], ["name", "category_id", "subcategory_id", "state"], limit=1)
+        report = CityReport.search_read([('name', '=', name)], ["name", "category_id", "subcategory_id", "state", "note"], limit=1)
         if report:
             log = request.env['city.report.state.log'].sudo().search([('report_id', '=', report[0] ['id'])], limit=1)
             res = report[0]
             res.update({
                 
-                "state": dict(CityReport._fields['state']._description_selection(request.env)).get(res["state"])
+                "state": dict(CityReport._fields['state']._description_selection(request.env)).get(res["state"]),
+                "note": res["note"] if res["note"] else "Sin notas adicionales",
             })
             if log:
                 log_create_date = log.create_date
