@@ -108,7 +108,7 @@ class CityReport(Model):
     
     def _send_new_report_email(self):
         template = self.env.ref("city_management.send_mail_to_user")
-        template.send_mail(self.id, force_send=True)
+        template.send_mail(self.id, force_send=True, email_values=dict(subtype_id=1))
 
     @model
     def create(self, vals):
