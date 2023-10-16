@@ -38,7 +38,7 @@ class GeocodeController(Controller):
         }), status=200)
 
     @route(f"{BASE_URL}/reverse_geocode", type='http', auth='none', methods=['POST'], csrf=False, cors="*")
-    def geocode_by_address(self):
+    def reverse_geocode(self):
         data = json.loads(request.httprequest.data)
         geocode_response = self.maps.reverse_geocode_request(data["latitude"],data["longitude"])
         return Response(json.dumps({
