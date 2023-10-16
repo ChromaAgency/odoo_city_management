@@ -19,7 +19,7 @@
         <field name="name">city.report.category.view.tree</field>
         <field name="model">city.report.category</field>
         <field name="arch" type="xml">
-            <tree string="" editable="bottom">
+            <tree string="" editable="bottom" multi_edit="1">
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="code" />
