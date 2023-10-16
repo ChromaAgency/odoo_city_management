@@ -8,6 +8,17 @@ _logger = logging.getLogger(__name__)
 class HereMapsV6(BaseMaps):
     apikey:str = None
 
+    def _reverse_geocode_url(self, *args, **kwargs):
+        return "https://discover.search.hereapi.com/v1/discover"
+
+    def _reverse_geoceode_params(self, latitude, longitude, *args, **kwargs):
+        return {
+            "apikey": self.apikey,
+            "at":f"{latitude},{longitude}",
+            "q":f"{latitude},{longitude}",
+            "lang":"es-ES"
+        }
+
     def _geocode_url(self, address,  *args, **kwargs):
         return "https://geocoder.ls.hereapi.com/6.2/geocode.json"
     
@@ -45,4 +56,12 @@ class HereMapsV6(BaseMaps):
             "zip_code": address.get("PostalCode"),
         }
         
-        
+    def reverse_geocode_request(self, latitude, longitude, *args, **kwargs):
+        response = super().reverse_geocode_request(latitude, longitude, *args, **kwargs)
+        if response.status_code != 200:
+            raise Exception("Geocode request failed")
+        response_json = response.json()
+        label = response_json['items'][0]['address']['label']
+        return {
+            "display_name": label,
+        }

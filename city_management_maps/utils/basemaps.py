@@ -5,6 +5,12 @@ import requests
 class BaseMaps:
     apikey:str = None
 
+    def _reverse_geocode_url(self, *args, **kwargs):
+        raise NotImplementedError("_reverse_geocode_url method must be implemented")
+
+    def _reverse_geoceode_params(self, latitude, longitude, *args, **kwargs):
+        raise NotImplementedError("_reverse_geocode_url method must be implemented")
+
     def _geocode_url(self, address, *args, **kwargs):
         raise NotImplementedError("_geocode_url method must be implemented")
     
@@ -17,3 +23,6 @@ class BaseMaps:
 
     def geocode_request(self, address, *args, **kwargs):
         return requests.get(self._geocode_url(address, *args, **kwargs), params=self._geocode_params(address, *args, **kwargs), headers=self._geocode_headers)
+    
+    def reverse_geocode_request(self, latitude, longitude):
+        return requests.get(self._reverse_geocode_url(), params=self._reverse_geoceode_params(latitude, longitude), headers=self._geocode_headers)

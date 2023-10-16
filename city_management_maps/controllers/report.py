@@ -16,19 +16,34 @@ class GeocodeController(Controller):
     def base_url(self):
         return request.env['ir.config_parameter'].sudo().get_param('web.base.url')
 
-    @route(f"{BASE_URL}/geocode_address", type='http', auth='none', methods=['POST'], csrf=False, cors="*")
-    def geocode_by_address(self):
-        data = json.loads(request.httprequest.data)
+    @property
+    def maps(self):
         geocoder_strategy = request.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_strategy", "heremaps")
-        default_address = request.env["ir.config_parameter"].sudo().get_param("city_management_maps.default_address", "Irapuato, Guanajuato, Mexico")
         maps_constructor = GEOCODER_STRATEGIES[geocoder_strategy]
         apikey = request.env["ir.config_parameter"].sudo().get_param("city_management_maps.geocoder_apikey", HERE_APIKEY)
         maps:BaseMaps = maps_constructor(apikey=apikey)
-        geocode_response = maps.geocode_request(f'{data["report_address"]}{default_address}')
+        return maps
+
+    @property
+    def default_address(self):
+        return request.env["ir.config_parameter"].sudo().get_param("city_management_maps.default_address", "Irapuato, Guanajuato, Mexico")
+
+
+    @route(f"{BASE_URL}/geocode_address", type='http', auth='none', methods=['POST'], csrf=False, cors="*")
+    def geocode_by_address(self):
+        data = json.loads(request.httprequest.data)
+        geocode_response = self.maps.geocode_request(f'{data["report_address"]}{self.default_address}')
         return Response(json.dumps({
             "result": geocode_response["display_name"]
         }), status=200)
 
+    @route(f"{BASE_URL}/reverse_geocode", type='http', auth='none', methods=['POST'], csrf=False, cors="*")
+    def geocode_by_address(self):
+        data = json.loads(request.httprequest.data)
+        geocode_response = self.maps.reverse_geocode_request(data["latitude"],data["longitude"])
+        return Response(json.dumps({
+            "result": geocode_response["display_name"]
+        }), status=200)
 
     @route(f"{CHATBOT_OPTIONS_URL}/report/<int:report_id>/geocode_address", type='http', auth='none', methods=['GET'], csrf=False, cors="*")
     def geocode_get_address(self, report_id):
