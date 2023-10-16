@@ -33,7 +33,7 @@ class ChatBotOptions(Controller):
         categories = request.env['city.report.category'].sudo().search_read([('parent_id', '=', category_id)], ["name", "code"])
         categories.sort(key=lambda category: int(category['code']))
         response_body = {
-            "result": "\n".join(f"▶️ {category['code']} - {category['name']}\n" for category in categories),
+            "result": "\n".join(f"▶️ {category['code']} - {category['name']}" for category in categories),
             "filters":{
                 "maxOption":max(int(category['code']) for category in categories),
                 "minOption":min(int(category['code']) for category in categories),
