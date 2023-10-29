@@ -6,8 +6,8 @@
           <field name="name">City: Send new report</field>
             <field name="model_id" ref="city_management.model_city_report"/>
             <field name="subject">Se creo la solicitud {{object.name}}.</field>
-            <field name="email_from">{{ (object.env.company_id.email_formatted) }}</field>
-            <field name="partner_to">{{ object.user_id.partner_id.id }}</field>
+            <field name="email_from">{{ (object.env.company.partner_id.email_formatted) }}</field>
+            <field name="partner_to">{{ object.user_id.partner_id.id if object.user_id else object.env.company.partner_id.id }}</field>
             <field name="description">Used to send responsibles the mail with the new report</field>
             <field name="body_html" type="html">
                     <div class="es-wrapper-color" style="background-color:#ECEFF4">
