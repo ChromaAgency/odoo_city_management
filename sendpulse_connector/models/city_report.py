@@ -18,8 +18,22 @@ class CityReport(Model):
         except Exception as e:
             sendpulse_bot.send_template_by_phone(self.mobile, template_name, language={"code": "es_AR"}, components=[])
 
+    def mark_as_done(self):
+        _ = super().mark_as_done()
+        self.send_state_update()
+        return _
+
+    def mark_as_rejected(self):
+        _ = super().mark_as_rejected()
+        self.send_state_update()
+        return _
+    
     def mark_as_in_progress(self):
         _ = super().mark_as_in_progress()
+        self.send_state_update()
+        return _
+    
+    def send_state_update(self):
         state = dict(self._fields['state']._description_selection(
             self.env)).get(self.state)
         name = self.name
@@ -39,4 +53,3 @@ class CityReport(Model):
                                                         },
 
                                                     ]}])
-        return _
