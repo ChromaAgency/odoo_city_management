@@ -11,6 +11,7 @@
         'data/sendpulse.chatbot.xml',
         'data/sendpulse.auth.xml',
         'data/menus.xml',
+        'data/cron.xml',
     ],
     
     'application': True,

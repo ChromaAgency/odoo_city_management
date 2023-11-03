@@ -22,30 +22,42 @@ class SendpulseChatbot(Model):
     @property
     def base_endpoint(self):
         return f"{self.auth_id.base_url}/whatsapp"
+    
 
+    def _make_request_and_handle_errors(self, make_request:callable):
+        resp = make_request()
+        if resp.status_code == 401:
+            self.auth_id.get_oauth()
+            resp = make_request()
+        return resp 
+    
     def send_message_by_phone(self, phone, message_type, message):
-        resp = requests.post(f'{self.base_endpoint}/contacts/sendByPhone', json={
-            "bot_id": self.bot_id,
-            "phone": phone,
-            "message": {
-                "type": message_type,
-                "text": {
-                    "body": message
+        def make_request():
+            return requests.post(f'{self.base_endpoint}/contacts/sendByPhone', json={
+                "bot_id": self.bot_id,
+                "phone": phone,
+                "message": {
+                    "type": message_type,
+                    "text": {
+                        "body": message
+                    }
                 }
-            }
-            }, headers=self.headers)
+                }, headers=self.headers)
+        resp = self._make_request_and_handle_errors(make_request)
         return resp.json()
     
     def send_template_by_phone(self, phone, template, language, components):
-        resp = requests.post(f'{self.base_endpoint}contacts/sendTemplateByPhone', json={
-            "bot_id": self.bot_id,
-            "phone": phone,
-            "template": {
-                "name": template,
-                "language": language,
-                "components": components
-            }
-            }, headers=self.headers) 
+        def make_request():
+            return requests.post(f'{self.base_endpoint}contacts/sendTemplateByPhone', json={
+                "bot_id": self.bot_id,
+                "phone": phone,
+                "template": {
+                    "name": template,
+                    "language": language,
+                    "components": components
+                }
+                }, headers=self.headers) 
+        resp = self._make_request_and_handle_errors(make_request)
             
         return resp.json()
     
