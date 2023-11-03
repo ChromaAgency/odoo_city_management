@@ -105,6 +105,12 @@ class CityReport(Model):
     def mark_as_cancel(self):
         return self._trigger_cancel_wizard("cancel")
 
+    def write_from_cancel_wizard(self, reason):
+        return self.write({
+            "cancel_reason":self.cancel_reason_id,
+            "state": self._context.get("state", "cancel")
+                    })
+
     def mark_as_rejected(self):
         return self._trigger_cancel_wizard("rejected")
 

@@ -23,8 +23,8 @@ class CityReport(Model):
         self.send_state_update()
         return _
 
-    def mark_as_rejected(self):
-        _ = super().mark_as_rejected()
+    def write_from_cancel_wizard(self):
+        _ = super().write_from_cancel_wizard()
         self.send_state_update()
         return _
     
