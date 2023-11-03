@@ -23,8 +23,8 @@ class CityReport(Model):
         self.send_state_update()
         return _
 
-    def write_from_cancel_wizard(self):
-        _ = super().write_from_cancel_wizard()
+    def write_from_cancel_wizard(self, reason):
+        _ = super().write_from_cancel_wizard(reason)
         self.send_state_update()
         return _
     
