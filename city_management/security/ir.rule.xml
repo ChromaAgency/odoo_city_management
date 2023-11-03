@@ -10,9 +10,19 @@
         <field name="perm_create" eval="1" />
         <field name="perm_unlink" eval="0" />
     </record>
+     <record id="readonly_self_created" model="ir.rule">
+        <field name="name">City Report: Read only assigned</field>
+        <field name="model_id" ref="city_management.model_city_report" />
+        <field name="groups" eval="[(6,0, [ref('city_management.group_responsible_id')])]" />
+        <field name="domain_force">[( 'user_id', '=',user.id )]</field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_unlink" eval="0" />
+    </record>
     
  <record id="rule_report_manager_all" model="ir.rule">
-        <field name="name">City Report: Report manager</field>
+        <field name="name">City Report: Report manager</field>a
         <field name="model_id" ref="city_management.model_city_report" />
         <field name="groups" eval="[(6,0, [ref('city_management.group_report_manager')])]" />
         <field name="domain_force">[( 1, '=',1 )]</field>

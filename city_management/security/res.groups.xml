@@ -4,9 +4,14 @@
         <field name="name">Only self created</field>
         <field name="category_id" ref="city_management.module_category_city_report" />
     </record>
+    <record id="group_responsible_id" model="res.groups">
+        <field name="name">Only assigned reports</field>
+        <field name="implied_ids" eval="[(4, ref('city_management.group_self_created'))]"/>
+        <field name="category_id" ref="city_management.module_category_city_report" />
+    </record>
     <record id="group_report_manager" model="res.groups">
         <field name="name">Report Manager</field>
         <field name="category_id" ref="city_management.module_category_city_report" />
-        <field name="implied_ids" eval="[(4, ref('city_management.group_self_created'))]"/>
+        <field name="implied_ids" eval="[(4, ref('city_management.group_responsible_id'))]"/>
     </record>
 </odoo>
