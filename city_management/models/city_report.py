@@ -107,7 +107,7 @@ class CityReport(Model):
 
     def write_from_cancel_wizard(self, reason):
         return self.write({
-            "cancel_reason":self.cancel_reason_id,
+            "cancel_reason":reason,
             "state": self._context.get("state", "cancel")
                     })
 
