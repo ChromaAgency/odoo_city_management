@@ -23,7 +23,7 @@ class CityReport(Model):
         state = dict(self._fields['state']._description_selection(
             self.env)).get(self.state)
         name = self.name
-        self.send_whatsapp_message_by_sendpulse(f"Tu solicitud {name} ha sido {state}. En los próximos días será solucionado. Gracias por tu colaboración.", 
+        self.send_whatsapp_message_by_sendpulse(f"Hay un cambio en el reporte {name} ...ahora el estado es {state}.", 
                                                 "update_report_status",
                                                 lang="es",
                                                 components=[{
