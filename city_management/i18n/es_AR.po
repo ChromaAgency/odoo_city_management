@@ -230,7 +230,7 @@ msgstr "Nombre mostrado"
 #: model_terms:ir.ui.view,arch_db:city_management.city_report_view_search
 #, python-format
 msgid "Done"
-msgstr "Hecho"
+msgstr "Completado"
 
 #. module: city_management
 #. odoo-python
