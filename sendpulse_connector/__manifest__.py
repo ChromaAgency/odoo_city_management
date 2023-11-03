@@ -5,12 +5,12 @@
     'summary': 'Sendpulse Integration',
     'version': '0.1',
     'description': """""",
-    'depends': [],
+    'depends': ['city_management'],
     'data': [
         
-        'data/menus.xml',
         'data/sendpulse.chatbot.xml',
         'data/sendpulse.auth.xml',
+        'data/menus.xml',
     ],
     
     'application': True,

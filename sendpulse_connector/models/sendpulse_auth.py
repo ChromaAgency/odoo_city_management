@@ -34,3 +34,7 @@ class SendpulseAuth(Model):
             "Authorization": f"Bearer {self.token}",
             "Content-Type": "application/json"
         }
+    
+    @property
+    def base_url(self):
+        return "https://api.sendpulse.com"
