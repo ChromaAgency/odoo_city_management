@@ -10,7 +10,7 @@
         <field name="perm_create" eval="1" />
         <field name="perm_unlink" eval="0" />
     </record>
-     <record id="readonly_self_created" model="ir.rule">
+     <record id="readonly_self_assigned" model="ir.rule">
         <field name="name">City Report: Read only assigned</field>
         <field name="model_id" ref="city_management.model_city_report" />
         <field name="groups" eval="[(6,0, [ref('city_management.group_responsible_id')])]" />
