@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sendpulse_auth_get_oauth_cron" model="ir.cron">
+        <field name="name">Get senpulse token</field>
+        <field name="model_id" ref="model_sendpulse_auth"/>
+        <field name="interval_number">45</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="state">code</field>
+        <field name="code">
+            for r in model.search([]):
+                r.get_oauth()
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_sendpulse" name="SendPulse" sequence="10"/>
+    <menuitem
+        id="sendpulse_auth_menu"
+        groups="base.group_erp_manager"
+        name="Auth"
+        action="sendpulse_connector.sendpulse_auth_action"
+        sequence="10"/>
+    <menuitem
+        id="sendpulse_cahtbot_menu"
+        name="Chatbot"
+        sequence="10"
+        action="sendpulse_connector.sendpulse_chatbot_action"
+        groups="base.group_erp_manager"
+        />
+    
+
+</odoo>

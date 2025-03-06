@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <menuitem name="WhatsApp"
+        id="whatsapp_menu_root"
+        sequence="260"/>
+         <menuitem name="Configuración whatsapp"
+        id="whatsapp_account_menu"
+        parent="whatsapp_menu_root"
+        action="whatsapp_account_action"/>
+
+</odoo>

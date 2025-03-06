@@ -54,10 +54,13 @@ class WebhookController(Controller):
         data = json.loads(request.httprequest.data)
         action = data["action"]
         d = data["data"]
+        if "category_id" in d:
+            d['category_id'] = int(d.pop("category_id"))
+        if "subcategory_id" in d:
+            d['subcategory_id'] = int(d.pop("subcategory_id"))
         try:
             response = call_webhook_action(action, d)
         except KeyError:
             _logger.error(f"Webhook action {action} not found")
             return Response("Action not defined", status=500)
-        
         return Response(json.dumps(response), status=200)
