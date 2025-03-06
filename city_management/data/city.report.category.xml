@@ -3,7 +3,7 @@
     <record id="city_report_category_action" model="ir.actions.act_window">
         <field name="name">Categorias de reporte</field>
         <field name="res_model">city.report.category</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <menuitem
         id="city_report_category_menu"

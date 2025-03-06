@@ -3,7 +3,7 @@
     <record id="city_report_cancel_reason_action" model="ir.actions.act_window">
         <field name="name">Razones de cancelación</field>
         <field name="res_model">city.report.cancel_reason</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <menuitem
         id="city_report_cancel_reason_menu"

@@ -28,14 +28,14 @@
         <field name="name">city.report.view.tree</field>
         <field name="model">city.report</field>
         <field name="arch" type="xml">
-            <tree string="Reportes">
+            <list string="Reportes">
                 <field name="name" string="Solicitud"/>
                 <field name="category_id" />
                 <field name="subcategory_id" />
                 <field name="create_date" />
                 <field name="state" widget="badge" decoration-success="state == 'done'" decoration-danger="state in ['cancel','rejected']" decoration-info="state == 'in_progress'"/>
                 <field name="progress" widget="progressbar"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -45,12 +45,12 @@
         <field name="arch" type="xml">
             <form string="Reporte">
                 <header>
-                    <button string="Resolver Solicitud" name="mark_as_done" type="object" class="oe_highlight" attrs="{'invisible':[('state','!=','in_progress')]}"/>
-                    <button string="Cancelar Solicitud" name="mark_as_cancel" type="object" class="bg-danger text-white" attrs="{'invisible':[('state','!=','in_progress')]}"/>
-                    <button string="Solicitud Sin Resolver" name="mark_as_pending" type="object" class="bg-danger text-white" attrs="{'invisible':[('state','!=','in_progress')]}"/>
-                    <button string="Pasar a pendiente" name="mark_as_pending" type="object" class="bg-danger text-white" attrs="{'invisible':[('state','!=','draft')]}"/>
-                    <button string="Aceptar Solicitud" name="mark_as_in_progress" type="object" class="oe_highlight" attrs="{'invisible':[('state','!=','pending')]}"/>
-                    <button string="Rechazar Solicitud" name="mark_as_rejected" type="object" class="bg-danger text-white" attrs="{'invisible':[('state','!=','pending')]}"/>
+                    <button string="Resolver Solicitud" name="mark_as_done" type="object" class="oe_highlight" invisible="state != 'in_progress'" />
+                    <button string="Cancelar Solicitud" name="mark_as_cancel" type="object" class="bg-danger text-white" invisible="state != 'in_progress'" />
+                    <button string="Solicitud Sin Resolver" name="mark_as_pending" type="object" class="bg-danger text-white" invisible="state != 'in_progress'" />
+                    <button string="Pasar a pendiente" name="mark_as_pending" type="object" class="bg-danger text-white" invisible="state != 'draft'" />
+                    <button string="Aceptar Solicitud" name="mark_as_in_progress" type="object" class="oe_highlight" invisible="state != 'pending'" />
+                    <button string="Rechazar Solicitud" name="mark_as_rejected" type="object" class="bg-danger text-white" invisible="state != 'pending'" />
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
@@ -74,7 +74,7 @@
                     <group name="details">
                         <group name="note">
                             <field name="create_date" string="Fecha de alta" />
-                            <field name="cancel_reason" attrs="{'invisible':[('cancel_reason','=',False)]}"/>
+                            <field name="cancel_reason" invisible="cancel_reason == False" />
                             <field name="note" />
                         </group>
                         <group name="write_date">
@@ -85,20 +85,21 @@
                     <notebook>
                         <page name="state_log" string="Historial de estados">
                             <field name="state_log_ids" readonly="1">
-                                <tree>
+                                <list>
                                     <field name="create_date" />
                                     <field name="create_uid" />
                                     <field name="state" widget="badge" decoration-success="state == 'done'" decoration-danger="state in ['cancel','rejected']" decoration-info="state == 'in_progress'"/>
-                                </tree>
+                                </list>
                             </field>
                         </page> 
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+                <chatter/>
+                <!-- <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
-                </div>
+                </div> -->
             </form>
         </field>
     </record>

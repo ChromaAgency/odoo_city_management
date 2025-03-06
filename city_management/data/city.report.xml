@@ -3,7 +3,7 @@
     <record id="city_report_action" model="ir.actions.act_window">
         <field name="name">Reportes</field>
         <field name="res_model">city.report</field>
-        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="view_mode">list,form,graph,pivot</field>
     </record>
     <menuitem
         id="city_report_menu"
