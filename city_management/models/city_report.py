@@ -58,6 +58,7 @@ class CityReport(Model):
     user_id = Many2one(comodel_name="res.users", string=_("Usuario responsable"), copy=False)
     progress = Integer(string=_("Progress"), copy=False)
     state_log_ids = One2many(comodel_name="city.report.state.log", inverse_name="report_id", string=_("State Logs"), copy=False)
+    feeling = Char(string=_("Sentimiento"))
 
     def _compute_user_attachment_link(self):
         for rec in self:

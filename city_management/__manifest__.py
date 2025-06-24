@@ -26,6 +26,7 @@
         'security/ir.model.access.csv',
 
         'wizards/city_report_cancel_wizard.xml',
+        'views/res_partner_neighbors_view.xml',
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
