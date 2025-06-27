@@ -1,7 +1,7 @@
 import base64
 from odoo.api import model
 from odoo.models import Model
-from odoo.fields import Binary, Char, Integer, Selection, Many2one, One2many, Float
+from odoo.fields import Binary, Char, Integer, Selection, Many2one, One2many, Float, Boolean, Text
 from odoo import  _
 import random
 import string
@@ -174,3 +174,14 @@ class CityReport(Model):
             logging.exception(e)
 
         return data
+        
+    neighbor_id = Many2one(comodel_name="res.partner", string=_("Neighbor"))
+    citizen_intention_id = Many2one(comodel_name="citizen.intention", string=_("Citizen Intention"))
+    feeling = Char(string=_("Sentimiento"),  related="citizen_intention_id.feeling", store=True)
+    gender = Selection(related='neighbor_id.gender', string="Sexo", store=True)
+    age = Integer(related='neighbor_id.age', string="Edad", store=True)
+    marital_status = Selection(related='neighbor_id.marital_status', string="Estado Civil", store=True)
+    dependent_children = Integer(related='neighbor_id.dependent_children', string="Hijos a Cargo", store=True)
+    satisfaction_level = Selection(related='neighbor_id.satisfaction_level', string="Nivel de Satisfacción", store=True)
+    expressed_feelings = Text(related='neighbor_id.expressed_feelings', string="Sentimientos Expresados", store=True)
+    willingness_for_volunteering = Boolean(related='neighbor_id.willingness_for_volunteering', string="Disposición al Voluntariado o Participación Ciudadana", store=True)

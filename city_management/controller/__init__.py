@@ -1,1 +1,1 @@
-from . import webhooks, chatbot_options, categories, report
+from . import webhooks, chatbot_options, categories, report, partner_intention

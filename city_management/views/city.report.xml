@@ -68,6 +68,15 @@
                         <group name="partner_data">
                             <field name="report_address" />
                             <field name="mobile" />
+                            <field name="neighbor_id" />
+                            <field name="gender" />
+                            <field name="age" />
+                            <field name="marital_status" />
+                            <field name="dependent_children" />
+                            <field name="satisfaction_level" />
+                            <field name="expressed_feelings" />
+                            <field name="willingness_for_volunteering" />
+                            <field name="citizen_intention_id" />
                             <field name="user_id" />
                         </group>
                     </group>

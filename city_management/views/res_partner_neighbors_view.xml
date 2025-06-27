@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="view_res_partner_neighbors_list" model="ir.ui.view">
+            <field name="name">res.partner.neighbors.list</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <list string="Vecinos">
+                    <field name="name"/>
+                    
+                </list>
+            </field>
+        </record>
+        
+        <record id="view_res_partner_neighbors_form" model="ir.ui.view">
+            <field name="name">res.partner.neighbors.form</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form string="Vecino">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="name"/>                            
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Calle..." class="o_address_street"/>
+                                <field name="street2" placeholder="Calle 2..." class="o_address_street"/>
+                                <field name="neighborhood" placeholder="Barrio" class="o_address_street"/>
+                                <field name="city" placeholder="Ciudad" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="Estado o Provincia" options="{'no_open': True, 'no_quick_create': True}" context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
+                                <field name="zip" placeholder="Código Postal" class="o_address_zip"/>
+                                <div name="partner_address_country" class="d-flex justify-content-between">
+                                    <field name="country_id" placeholder="País" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                                </div>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="gender"/>
+                            <field name="age"/>
+                            <field name="marital_status"/>
+                            <field name="dependent_children"/>
+                            <field name="satisfaction_level"/>
+                            <field name="expressed_feelings"/>
+                            <field name="willingness_for_volunteering"/>
+                            <field name="intention_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_res_partner_neighbors_search" model="ir.ui.view">
+            <field name="name">res.partner.neighbors.search</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Vecinos">
+                    <field name="name" string="Nombre" filter_domain="['|', ('name', 'ilike', self), ('email', 'ilike', self)]"/>
+                    <field name="gender"/>
+                    <field name="age"/>
+                    <field name="marital_status"/>
+                    <field name="dependent_children"/>
+                    <field name="satisfaction_level"/>
+                    <field name="expressed_feelings"/>
+                    <field name="willingness_for_volunteering"/>
+                    <filter string="Hombres" name="filter_male" domain="[('gender', '=', 'male')]"/>
+                    <filter string="Mujeres" name="filter_female" domain="[('gender', '=', 'female')]"/>
+                    <filter string="Otros" name="filter_other_gender" domain="[('gender', '=', 'other')]"/>
+                    <separator/>
+                    <filter string="Menores de 18" name="filter_age_under_18" domain="[('age', '&lt;', 18)]"/>
+                    <filter string="18-30 años" name="filter_age_18_30" domain="[('age', '&gt;=', 18), ('age', '&lt;=', 30)]"/>
+                    <filter string="31-50 años" name="filter_age_31_50" domain="[('age', '&gt;=', 31), ('age', '&lt;=', 50)]"/>
+                    <filter string="Mayores de 50" name="filter_age_over_50" domain="[('age', '&gt;', 50)]"/>
+                    <separator/>
+                    <filter string="Soltero/a" name="filter_single" domain="[('marital_status', '=', 'single')]"/>
+                    <filter string="Casado/a" name="filter_married" domain="[('marital_status', '=', 'married')]"/>
+                    <filter string="Divorciado/a" name="filter_divorced" domain="[('marital_status', '=', 'divorced')]"/>
+                    <filter string="Viudo/a" name="filter_widowed" domain="[('marital_status', '=', 'widowed')]"/>
+                    <separator/>
+                    <filter string="Con hijos a cargo" name="filter_has_dependent_children" domain="[('dependent_children', '&gt;', 0)]"/>
+                    <filter string="Sin hijos a cargo" name="filter_no_dependent_children" domain="[('dependent_children', '=', 0)]"/>
+                    <separator/>
+                    <filter string="Satisfacción Alta" name="filter_satisfaction_high" domain="[('satisfaction_level', '=', 'high')]"/>
+                    <filter string="Satisfacción Media" name="filter_satisfaction_medium" domain="[('satisfaction_level', '=', 'medium')]"/>
+                    <filter string="Satisfacción Baja" name="filter_satisfaction_low" domain="[('satisfaction_level', '=', 'low')]"/>
+                    <separator/>
+                    <filter string="Dispuesto a voluntariado" name="filter_willing_volunteering" domain="[('willingness_for_volunteering', '=', True)]"/>
+                    <filter string="No dispuesto a voluntariado" name="filter_not_willing_volunteering" domain="[('willingness_for_volunteering', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_res_partner_neighbors" model="ir.actions.act_window">
+            <field name="name">Vecinos</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_res_partner_neighbors_search"/>
+            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'list', 'view_id': ref('view_res_partner_neighbors_list')}), (0, 0, {'view_mode': 'form', 'view_id': ref('view_res_partner_neighbors_form')})]"/>
+            <field name="domain">[('is_company', '=', False)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Crea un nuevo vecino
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_city_management_root" name="Gestión Ciudadana" sequence="10"/>
+        <menuitem id="menu_neighbors" name="Vecinos" parent="menu_city_management_root" action="action_res_partner_neighbors" sequence="1"/>
+        
+    </data>
+</odoo>
