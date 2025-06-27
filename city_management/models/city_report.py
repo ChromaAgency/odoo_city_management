@@ -1,7 +1,7 @@
 import base64
 from odoo.api import model
 from odoo.models import Model
-from odoo.fields import Binary, Char, Integer, Selection, Many2one, One2many
+from odoo.fields import Binary, Char, Integer, Selection, Many2one, One2many, Float
 from odoo import  _
 import random
 import string
@@ -12,13 +12,13 @@ import requests
 _logger = logging.getLogger(__name__)
 
 REPORT_STATES = [
-    ("draft", _("Draft")),
-    ("pending", _("Pending")),
-    ("in_progress", _("In Progress")),
-    ("approved", _("Approved")),
-    ("rejected", _("Rejected")),
-    ("done", _("Done")),
-    ("cancel", _("Cancelled")),
+    ("draft", _("Borrador")),
+    ("pending", _("Pendiente")),
+    ("in_progress", _("En progreso")),
+    ("approved", _("Aprobado")),
+    ("rejected", _("Rechazado")),
+    ("done", _("Hecho")),
+    ("cancel", _("Cancelado")),
 ]
 
 def get_random_letter():
@@ -58,6 +58,8 @@ class CityReport(Model):
     user_id = Many2one(comodel_name="res.users", string=_("Usuario responsable"), copy=False)
     progress = Integer(string=_("Progress"), copy=False)
     state_log_ids = One2many(comodel_name="city.report.state.log", inverse_name="report_id", string=_("State Logs"), copy=False)
+    solve_time = Float(string=_("Tiempo de respuesta (Días)"), copy=False)
+    resolution = Char(string=_("Resolución"), copy=False)
 
     def _compute_user_attachment_link(self):
         for rec in self:
