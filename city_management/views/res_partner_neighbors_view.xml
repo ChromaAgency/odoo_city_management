@@ -1,6 +1,269 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+    <!-- Paperformat: No header/footer spacing -->
+    <record id="paperformat_res_partner_padron" model="report.paperformat">
+        <field name="name">Padron Sin Margenes</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">55</field>
+        <field name="margin_bottom">55</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">50</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Report Action -->
+    <record id="action_report_res_partner_padron" model="ir.actions.report">
+        <field name="name">Volante de empadronamiento</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">city_management.report_res_partner_padron</field>
+        <field name="report_file">city_management.report_res_partner_padron</field>
+        <field name="print_report_name">'Volante de empadronamiento - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="paperformat_id" ref="city_management.paperformat_res_partner_padron"/>
+    </record>
+
+    <!-- Custom Report Template -->
+    <template id="report_res_partner_padron">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="o_is_custom_layout" t-value="True"/>
+                <t t-set="o_custom_layout_background" t-value="False"/>
+                <t t-set="o_custom_layout_logo" t-value="False"/>
+                <t t-set="o_custom_layout_margins" t-value="False"/>
+            <t t-set="doc" t-value="docs[0]"/>
+            <div class="page" style="padding:0; background:white;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                <div class="row header" style="width:100%;" >
+                    <div class="col-6" style="flex: 1; text-align: left;">
+                        <img t-att-src="'/city_management/static/src/img/logo_left.png'" style="height:150px;"/>
+                    </div>
+                    <div class="col-6" style="flex: 1; text-align: right;">
+                        <img t-att-src="'/city_management/static/src/img/qr.png'" style="height:170px;"/>
+                        <div style="text-align: left; font-weight: bold; margin-left:100px;">
+                            <div style="font-weight: bold; margin-bottom: 2px;">
+                                <span t-field="doc.name"/>
+                            </div>
+                            <div>
+                                <span t-field="doc.street"/>
+                                <t t-if="doc.street2">, <span t-field="doc.street2"/></t><br/>
+                                <t t-if="doc.zip"><span t-field="doc.zip"/></t>
+                                <t t-if="doc.city"> - <span t-field="doc.city"/></t>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                   
+                <div>
+                <div style="font-weight: bold; margin-bottom: 10px;">
+                    Apreciado/a ciudadano/a
+                </div>
+                <div style="margin-bottom: 18px;">
+                    Nos complace enviarle la documentación que nos solicitó y esperamos que en futuras ocasiones también cuente con nuestros servicios.
+                </div>
+                <div style="margin-bottom: 18px;">
+                    Aprovechamos la ocasión para recordarle algunos de los trámites que puede solicitar a través del teléfono <b>010</b> y la web del Ayuntamiento de Barcelona, <b>ajuntament.barcelona.cat/tramits</b>:
+                </div>
+                <ul style="margin-bottom: 18px;">
+                    <li>
+                        <b>Padrón de habitants</b>: Altas, cambios de domicilio, corrección de datos, volantes de empadronamiento, alta por nacimiento en el padrón municipal de habitantes de Barcelona.
+                    </li>
+                    <li>
+                        <b>Hacienda Municipal</b>: Información general, domiciliaciones bancarias de tributos, pago con tarjeta bancaria, duplicados de recibos, certificados de pago, autoliquidación de plusvalía, corrección de datos, cambio del titular del IBI, notificación de deuda pendiente, fraccionamiento de deudas de tributos y multas.
+                    </li>
+                    <li>
+                        <b>Edificios, viviendas y locales</b>: Consulta de permisos para hacer obras, enterado de obras, inscripción en el registro de solicitantes de vivienda de protección oficial de Barcelona.
+                    </li>
+                    <li>
+                        <b>Transportes y vehículos</b>: Tarjeta T-16 de transporte para niños y niñas de Barcelona, tarjeta de residente de Área Verde, servicio de transporte especial para personas con discapacidad de Barcelona (tarjeta blanca), tarjeta de aparcamiento para personas con discapacidad.
+                    </li>
+                    <li>
+                        <b>Otros</b>: Solicitud de tarjeta para residentes de barrios adyacentes al Park Güell, duplicado de carné de vacunación infantil, registro de animales de compañía y salvajes en cautividad, licencia para la tenencia de perros potencialmente peligrosos.
+                    </li>
+                </ul>
+                <div style="margin-bottom: 18px;">
+                    Desde la web del Ayuntamiento de Barcelona <b>ajuntament.barcelona.cat/tramits</b> puede acceder al <b>espacio personal</b>, donde podrá consultar sus datos fiscales municipales, los de padrón, las gestiones iniciadas por internet y hacer algunos de los trámites más habituales.
+                </div>
+                <div style="margin-bottom: 18px;">
+                    Para más información<br/>
+                    <b>010</b> (llamada gratuita) y <b>ajuntament.barcelona.cat/tramits</b>
+                </div>
+                </div>
+                </div>
+                <div class="page" style="padding:0; background:white; page-break-before: always;">
+                <div>
+                <div style="font-weight: bold; margin-bottom: 10px;">
+                    Benvolgut/da ciutadà/na
+                </div>
+                <div style="margin-bottom: 18px;">
+                    Ens complau enviar-li la documentació que ens va sol·licitar i esperem que en futures ocasions també compti amb els nostres serveis.
+                </div>
+                <div style="margin-bottom: 18px;">
+                    Aprofitem l’ocasió per recordar-li alguns dels tràmits que pot sol·licitar a través del telèfon <b>010</b> i la web de l’Ajuntament de Barcelona, <b>ajuntament.barcelona.cat/tramits</b>:
+                </div>
+                <ul style="margin-bottom: 18px;">
+                    <li>
+                        <b>Padró d’habitants</b>: Altes, canvis de domicili, correcció de dades, volants d’empadronament, alta per naixement al padró municipal d’habitants de Barcelona.
+                    </li>
+                    <li>
+                        <b>Hisenda Municipal</b>: Informació general, domiciliacions bancàries de tributs, pagament amb targeta bancària, duplicats de rebuts, certificats de pagament, autoliquidació de plusvàlua, correcció de dades, canvi del titular de l’IBI, notificació de deute pendent, fraccionament de deutes de tributs i multes.
+                    </li>
+                    <li>
+                        <b>Edificis, habitatges i locals</b>: Consulta de permisos per fer obres, assabentat d’obres, inscripció al registre de sol·licitants d’habitatge de protecció oficial de Barcelona.
+                    </li>
+                    <li>
+                        <b>Transports i vehicles</b>: Targeta T-16 de transport per a nens i nenes de Barcelona, targeta de resident d’Àrea Verda, servei de transport especial per a persones amb discapacitat de Barcelona (targeta blanca), targeta d’aparcament per a persones amb discapacitat.
+                    </li>
+                    <li>
+                        <b>Altres</b>: Sol·licitud de targeta per a residents de barris adjacents al Park Güell, duplicat del carnet de vacunació infantil, registre d’animals de companyia i salvatges en captivitat, llicència per a la tinença de gossos potencialment perillosos.
+                    </li>
+                </ul>
+                <div style="margin-bottom: 18px;">
+                    Des de la web de l’Ajuntament de Barcelona <b>ajuntament.barcelona.cat/tramits</b> pot accedir a l’<b>espai personal</b>, on podrà consultar les seves dades fiscals municipals, les del padró, les gestions iniciades per internet i fer alguns dels tràmits més habituals.
+                </div>
+                <div style="margin-bottom: 18px;">
+                    Per a més informació<br/>
+                    <b>010</b> (trucada gratuïta) i <b>ajuntament.barcelona.cat/tramits</b>
+                </div>
+                </div>
+                </div>
+                <div style="font-weight:bold; margin: 18px 0 10px 0; page-break-before: always;" >
+                En el Padrón Municipal de habitantes de este Municipio, constan, en el día de la fecha, los siguientes datos:
+                </div>
+                <table style="width:100%; border-collapse:collapse; margin-bottom:18px;">
+                <tr>
+                    <td colspan="2" style="background:#e9ecef; font-weight:bold; padding:6px;">DATOS DEL INSCRITO</td>
+                </tr>
+                <tr>
+                    <td style="width:30%; font-weight:bold;">Apellidos y Nombre:</td>
+                    <td><span t-field="doc.name"/></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Documento:</td>
+                    <td><span t-field="doc.vat"/></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Sexo:</td>
+                    <td><span t-field="doc.gender"/></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Fecha Nacimiento:</td>
+                    <!-- <td><span t-field="doc.birthdate_date"/></td> -->
+                    <td>17/06/1966</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Nacionalidad:</td>
+                    <td><span t-field="doc.country_id.name"/></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Lugar Nacimiento:</td>
+                    <!-- <td><span t-field="doc.birthplace"/></td> -->
+                    <td>Barcelona</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="background:#e9ecef; font-weight:bold; padding:6px;">DATOS DEL DOMICILIO</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Domicilio:</td>
+                    <td>
+                    <span t-field="doc.street"/><t t-if="doc.street2">, <span t-field="doc.street2"/></t>
+                    <t t-if="doc.neighborhood">, <span t-field="doc.neighborhood"/></t>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Código Postal:</td>
+                    <td><span t-field="doc.zip"/></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Distrito / Sección:</td>
+                    <!-- <td><span t-field="doc.district_section"/></td> -->
+                    <td>2 / 83</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="background:#e9ecef; font-weight:bold; padding:6px;">DATOS PADRONALES</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Situación en Padrón:</td>
+                    <!-- <td><span t-field="doc.padron_status"/></td> -->
+                    <td>ALTA</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Fecha alta padrón:</td>
+                    <!-- <td><span t-field="doc.padron_date"/></td> -->
+                    <td>19/11/2017</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;">Fecha alta domicilio:</td>
+                    <!-- <td><span t-field="doc.address_date"/></td> -->
+                    <td>19/11/2017</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="background:#e9ecef; font-weight:bold; padding:6px;">EFECTOS</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-weight:bold;">Todos los efectos</td>
+                </tr>
+                </table>
+                <div style="text-align:right; margin-top:24px;">
+                BARCELONA, <t t-esc="datetime.date.today().strftime('%-d de %B de %Y')"/>
+                </div>
+            <div class="footer" style="margin-top:40px; font-size:0.95em; background: #ededed; border-radius: 4px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding: 8px 16px;">
+                    <span style="font-weight:bold;">CÓDIGO SEGURO DE VERIFICACIÓN:</span>
+                    <span style="font-size:1.25em; letter-spacing:2px; font-family:monospace;">14155257113523233343</span>
+                </div>
+                <div style="display:flex; background:white; align-items:center; padding: 8px 16px 0 16px;">
+                    <img t-att-src="'/report/barcode/Code128/14155257113523233343?width=150&amp;height=40'" alt="Barcode" />
+                    <span style="margin-left:18px;">Puedes verificar la autenticidad de este documento en: https://seuelelectronica.ajuntament.barcelona.cat/es/verificacion-de-documentos</span>
+                </div>
+                <div style="border-top:2px solid #222; margin: 12px 0 0 0;"></div>
+                <div style="padding: 8px 16px 12px 16px; font-size:0.85em;">
+                    <span style="font-weight:bold;">NOTA:</span> Este documento tiene carácter informativo en relación con la residencia y el domicilio habitual en este Municipio, de acuerdo con lo establecido en el artículo 61 del R. D. 2612/1996, de 20 de diciembre por el que se modifica el Reglamento de Población y Demarcación Territorial de las Entidades Locales aprobado por R. D. 1690/1986, de 11 de junio.
+                </div>
+            </div>
+            <div class="page" style="padding:0; background:white; page-break-before: always;">
+                <div style="margin: 0 24px;">
+                    <div style="font-weight: bold; text-align: center; margin-bottom: 18px; font-size: 1.15em;">
+                        COMPROBACIÓN DE RESIDENCIA DE CIUDADANOS COMUNITARIOS Y ASIMILADOS
+                    </div>
+                    <div style="margin-bottom: 18px;">
+                        La resolución de 17 de febrero del 2020, por la que se dictan instrucciones técnicas a los ayuntamientos sobre la gestión del Padrón municipal (BOE. 122 de 02/5/2020), establece la obligación para los Ayuntamientos de comprobar la residencia de los ciudadanos comunitarios o asimilados empadronados en el municipio en cualquiera de las situaciones siguientes:
+                        <ul>
+                            <li>Ciudadanos no inscritos en el Registro Central de Extranjeros.</li>
+                            <li>Ciudadanos con tarjeta de residencia con una expedición de más de 5 años.</li>
+                            <li>Ciudadanos con Certificado de Inscripción en el Registro Central de Extranjeros con una expedición de más de 5 años.</li>
+                        </ul>
+                        El Ayuntamiento comunicará a los interesados su obligación de confirmar por escrito la residencia en el domicilio de empadronamiento de este municipio.<br/>
+                        En caso de no realizar el trámite correspondiente, se iniciará un expediente de baja en el Padrón de habitantes.
+                    </div>
+                    <div style="font-weight: bold; text-align: center; margin-bottom: 18px; font-size: 1.15em;">
+                        RENOVACIÓN DE LA INSCRIPCIÓN PADRONAL DE CIUDADANOS EXTRACOMUNITARIOS
+                    </div>
+                    <div style="margin-bottom: 18px;">
+                        El artículo 16 de la Ley de Bases del Régimen Local establece la obligación de los ciudadanos no comunitarios sin permiso de residencia permanente de renovar su inscripción padronal cada dos años.<br/>
+                        La no renovación podrá suponer la caducidad de la inscripción y, por tanto, la baja padronal.
+                    </div>
+                    <div style="font-weight: bold; text-align: center; margin-bottom: 18px; font-size: 1.15em;">
+                        PROTECCIÓN DE DATOS
+                    </div>
+                    <div>
+                        De acuerdo con la normativa de protección de datos le informamos de que sus datos personales serán tratados por el Ayuntamiento de Barcelona con el fin de gestionar el Padrón Municipal de Habitantes (tratamiento 0394 – Padrón municipal de habitantes). Sus datos no serán cedidos a terceros ni utilizados para elaborar decisiones automatizadas (incluida la elaboración de perfiles), excepto en los casos establecidos en la normativa legal vigente. Tiene derecho a acceder, rectificar y suprimir sus datos, así como otros derechos sobre estos. Puede consultar información adicional sobre este tratamiento y protección de datos en www.bcn.cat/ajuntament/protecciodades. Sus datos serán eliminados una vez cumplidas las obligaciones legales derivadas de la gestión de la actividad.
+                    </div>
+                </div>
+            </div>
+            </div>
+            </t>
+        </t>
+    </template>
 
         <record id="view_res_partner_neighbors_list" model="ir.ui.view">
             <field name="name">res.partner.neighbors.list</field>

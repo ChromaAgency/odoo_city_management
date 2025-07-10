@@ -31,4 +31,10 @@
     # data files containing optionally loaded demonstration data
     'demo': [
     ],
+    'assets': {
+        'web.assets_backend': [
+            'city_management/static/src/img/logo_left.png',
+            'city_management/static/src/img/qr.png',
+        ],
+    },
 }
