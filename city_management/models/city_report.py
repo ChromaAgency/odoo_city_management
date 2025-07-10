@@ -176,8 +176,8 @@ class CityReport(Model):
 
         return data
         
-    neighbour_id = Many2one(comodel_name="res.partner", string=_("Neighbor"))
-    citizen_intention_id = Many2one(comodel_name="citizen.intention", string=_("Citizen Intention"))
+    neighbour_id = Many2one(comodel_name="res.partner", string=_("Vecino"))
+    citizen_intention_id = Many2one(comodel_name="citizen.intention", string=_("Intención Ciudadana"))
     feeling = Selection(string=_("Sentimiento"),  related="citizen_intention_id.feeling", store=True)
     gender = Selection(related='neighbour_id.gender', string="Sexo", store=True)
     age = Integer(related='neighbour_id.age', string="Edad", store=True)

@@ -94,7 +94,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page name="client_data" string="Client Information">
+                        <page name="client_data" string="Información del vecino">
                             <group>
 
                                 <group name="personal_info">
