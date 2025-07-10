@@ -6,7 +6,7 @@ import json
 
 _logger = logging.getLogger(__name__)
 
-BASE_URL = '/partner_intention'
+BASE_URL = '/city_management/citizen_intention'
 class PartnerController(Controller):
 
     @property
@@ -14,14 +14,16 @@ class PartnerController(Controller):
         return request.env['ir.config_parameter'].sudo().get_param('web.base.url')
 
 
-    @route(f"{BASE_URL}/intention", type='http', auth='none', methods=['POST'], csrf=False, cors="*")
+    @route(f"{BASE_URL}", type='http', auth='none', methods=['POST'], csrf=False, cors="*")
     def create_intention(self):
         try:
             data = json.loads(request.httprequest.data)
             _logger.info(f"Data: {data}")
+            mobile = data.get('mobile')
+            partner = request.env['res.partner'].sudo().search([('mobile', '=', mobile)], limit=1)
             citizen_intention = request.env['citizen.intention'].sudo()
             intention = citizen_intention.create({
-                'partner_id': data.get('partner_id'),
+                'partner_id': partner.id,
                 'intention': data.get('intention'),
                 'detail': data.get('detail'),
                 'feeling': data.get('feeling'),

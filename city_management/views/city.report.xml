@@ -9,15 +9,15 @@
                 <field name="mobile" />
                 <field name="category_id" />
                 <field name="subcategory_id" />
-                <filter name="date" string="Create date" date="create_date"  />
+                <filter name="date" string="Create date" date="create_date" />
                 <separator />
-                <filter name="pending" string="Pending" domain="[('state', '=', 'pending')]"  />
-                <filter name="in_progress" string="En progreso" domain="[('state', '=', 'in_progress')]"  />
-                <filter name="done" string="Done" domain="[('state', '=', 'done')]"  />
-                <filter name="cancel" string="Cancelled" domain="[('state', '=', 'cancel')]"  />
-                <filter name="rejected" string="Rejected" domain="[('state', '=', 'rejected')]"  />
+                <filter name="pending" string="Pending" domain="[('state', '=', 'pending')]" />
+                <filter name="in_progress" string="En progreso" domain="[('state', '=', 'in_progress')]" />
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]" />
+                <filter name="cancel" string="Cancelled" domain="[('state', '=', 'cancel')]" />
+                <filter name="rejected" string="Rejected" domain="[('state', '=', 'rejected')]" />
                 <filter name="open" string="Open" domain="[('state', 'not in', ['draft','done','cancel','rejected'])]" />
-                <filter name="closed" string="Closed" domain="[('state', 'in', ['draft','done','cancel','rejected'])]"  />
+                <filter name="closed" string="Closed" domain="[('state', 'in', ['draft','done','cancel','rejected'])]" />
                 <filter name="groupby_category" string="Category" context="{'group_by': 'category_id'}" />
                 <filter name="groupby_subcategory" string="Subcategory" context="{'group_by': 'subcategory_id'}" />
                 <filter name="groupby_state" string="State" context="{'group_by': 'state'}" />
@@ -65,19 +65,10 @@
                             <field name="category_id" />
                             <field name="subcategory_id" />
                         </group>
-                        <group name="partner_data">
+                        <group name="contact_info">
                             <field name="report_address" />
                             <field name="mobile" />
-                            <field name="neighbor_id" />
-                            <field name="gender" />
-                            <field name="age" />
-                            <field name="marital_status" />
-                            <field name="dependent_children" />
-                            <field name="satisfaction_level" />
-                            <field name="expressed_feelings" />
-                            <field name="willingness_for_volunteering" />
-                            <field name="citizen_intention_id" />
-                            <field name="user_id" />
+                            <field name="neighbour_id" context="{'form_view_ref': 'city_management.view_res_partner_neighbors_form'}"/>
                         </group>
                     </group>
                     <group name="details">
@@ -90,7 +81,7 @@
                             <field name="write_date" />
                             <field name="user_attachment_link" />
                             <field name="user_attachment_filename" invisible="1"/>
-                            <field name="user_attachment"  filename="user_attachment_filename" />
+                            <field name="user_attachment" filename="user_attachment_filename" />
                         </group>
                     </group>
                     <notebook>
@@ -102,11 +93,29 @@
                                     <field name="state" widget="badge" decoration-success="state == 'done'" decoration-danger="state in ['cancel','rejected']" decoration-info="state == 'in_progress'"/>
                                 </list>
                             </field>
-                        </page> 
+                        </page>
+                        <page name="client_data" string="Client Information">
+                            <group>
+
+                                <group name="personal_info">
+                                    <field name="gender" />
+                                    <field name="age" />
+                                    <field name="marital_status" />
+                                    <field name="dependent_children" />
+                                </group>
+                                <group name="feedback_info">
+                                    <field name="satisfaction_level" />
+                                    <field name="expressed_feelings" />
+                                    <field name="willingness_for_volunteering" />
+                                    <field name="citizen_intention_id" />
+                                    <field name="user_id" />
+                                </group>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
                 <chatter/>
-  
+
             </form>
         </field>
     </record>

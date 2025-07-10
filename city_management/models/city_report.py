@@ -1,7 +1,7 @@
 import base64
 from odoo.api import model
 from odoo.models import Model
-from odoo.fields import Binary, Char, Integer, Selection, Many2one, One2many, Float, Boolean, Text
+from odoo.fields import Binary, Char, Integer, Selection, Many2one, One2many, Float, Boolean, Text, Selection
 from odoo import  _
 import random
 import string
@@ -32,6 +32,7 @@ def get_random_string_with(func, length):
 
 def get_name_with_rand_letters_and_numbers(rand_numbers:int=3,rand_letters:int=4 ):
     return f"{get_random_string_with(get_random_number, length=rand_numbers)}{get_random_string_with(get_random_letter, length=rand_letters)}"
+    
 def get_vals_as_list(vals):
     if isinstance(vals, dict):
         vals = [vals]
@@ -175,13 +176,13 @@ class CityReport(Model):
 
         return data
         
-    neighbor_id = Many2one(comodel_name="res.partner", string=_("Neighbor"))
+    neighbour_id = Many2one(comodel_name="res.partner", string=_("Neighbor"))
     citizen_intention_id = Many2one(comodel_name="citizen.intention", string=_("Citizen Intention"))
-    feeling = Char(string=_("Sentimiento"),  related="citizen_intention_id.feeling", store=True)
-    gender = Selection(related='neighbor_id.gender', string="Sexo", store=True)
-    age = Integer(related='neighbor_id.age', string="Edad", store=True)
-    marital_status = Selection(related='neighbor_id.marital_status', string="Estado Civil", store=True)
-    dependent_children = Integer(related='neighbor_id.dependent_children', string="Hijos a Cargo", store=True)
-    satisfaction_level = Selection(related='neighbor_id.satisfaction_level', string="Nivel de Satisfacción", store=True)
-    expressed_feelings = Text(related='neighbor_id.expressed_feelings', string="Sentimientos Expresados", store=True)
-    willingness_for_volunteering = Boolean(related='neighbor_id.willingness_for_volunteering', string="Disposición al Voluntariado o Participación Ciudadana", store=True)
+    feeling = Selection(string=_("Sentimiento"),  related="citizen_intention_id.feeling", store=True)
+    gender = Selection(related='neighbour_id.gender', string="Sexo", store=True)
+    age = Integer(related='neighbour_id.age', string="Edad", store=True)
+    marital_status = Selection(related='neighbour_id.marital_status', string="Estado Civil", store=True)
+    dependent_children = Integer(related='neighbour_id.dependent_children', string="Hijos a Cargo", store=True)
+    satisfaction_level = Selection(related='neighbour_id.satisfaction_level', string="Nivel de Satisfacción", store=True)
+    expressed_feelings = Text(related='neighbour_id.expressed_feelings', string="Sentimientos Expresados", store=True)
+    willingness_for_volunteering = Boolean(related='neighbour_id.willingness_for_volunteering', string="Disposición al Voluntariado o Participación Ciudadana", store=True)

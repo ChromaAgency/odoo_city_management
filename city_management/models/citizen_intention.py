@@ -12,10 +12,18 @@ class CitizenIntention(models.Model):
 
     intention = fields.Char(
         string="Intención",
+        required=True
     )
     detail = fields.Text(
         string="Detalle",
+        required=True
     )
-    feeling = fields.Char(
+    feeling = fields.Selection(
+        selection=[
+            ("positive", "Positivo"),
+            ("negative", "Negativo"),
+            ("neutral", "Neutral"),
+        ],
         string="Sentimiento",
+        required=True
     )
