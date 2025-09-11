@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend res.partner form view to add SendPulse WhatsApp button -->
+    <record id="res_partner_view_form_sendpulse" model="ir.ui.view">
+        <field name="name">res.partner.view.form.sendpulse</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <!-- SendPulse WhatsApp Messages Button -->
+                <button name="action_view_sendpulse_messages"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-whatsapp"
+                        invisible="sendpulse_message_count == 0">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Whatsapp</span>
+                        <field name="sendpulse_message_count" class="o_stat_value"/>
+                    </div>
+                </button>
+                
+                <!-- Send WhatsApp Button -->
+                <button name="action_send_sendpulse_whatsapp"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-paper-plane"
+                        string="Send WhatsApp"
+                        invisible="not mobile and not phone">
+                </button>
+            </div>
+        </field>
+    </record>
+
+    <!-- Add action in partner's context menu -->
+    <record id="action_send_whatsapp_partner" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp</field>
+        <field name="res_model">sendpulse.composer</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+</odoo>

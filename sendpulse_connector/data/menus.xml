@@ -1,18 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <menuitem id="menu_sendpulse" name="SendPulse" sequence="10"/>
+    <menuitem id="menu_sendpulse" name="Whatsapp" sequence="10"/>
+    
+    <!-- WhatsApp submenu -->
+    <menuitem id="menu_sendpulse_whatsapp" name="WhatsApp" parent="menu_sendpulse" sequence="5"/>
+    
+    <menuitem
+        id="sendpulse_template_menu"
+        name="Templates"
+        parent="menu_sendpulse_whatsapp"
+        action="sendpulse_template_action"
+        sequence="10"/>
+        
+    <menuitem
+        id="sendpulse_message_menu"
+        name="Messages"
+        parent="menu_sendpulse_whatsapp"
+        action="sendpulse_message_action"
+        sequence="20"/>
+    
+    <!-- Configuration submenu -->
+    <menuitem id="menu_sendpulse_config" name="Configuration" parent="menu_sendpulse" sequence="90"/>
+    
     <menuitem
         id="sendpulse_auth_menu"
         groups="base.group_erp_manager"
         name="Auth"
+        parent="menu_sendpulse_config"
         action="sendpulse_connector.sendpulse_auth_action"
         sequence="10"/>
+        
     <menuitem
-        id="sendpulse_cahtbot_menu"
-        name="Chatbot"
-        sequence="10"
-        action="sendpulse_connector.sendpulse_chatbot_action"
+        id="sendpulse_chatbot_menu"
+        name="Chatbots"
+        parent="menu_sendpulse_config"
+        sequence="20"
+        action="sendpulse_chatbot_action_new"
         groups="base.group_erp_manager"
         />
     

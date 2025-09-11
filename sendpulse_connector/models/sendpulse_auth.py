@@ -16,7 +16,15 @@ class SendpulseAuth(Model):
     token_type = fields.Char(string="Token Type")
     token_exp = fields.Datetime(string="Token Expiry")
     client_id = fields.Char(string="Bot ID", required=True)
-    client_secret = fields.Char(string="Bot ID", required=True)
+    client_secret = fields.Char(string="Bot Secret", required=True)
+
+    # Template relationship
+    template_ids = fields.One2many('sendpulse.template', 'sendpulse_chatbot_id', string="Templates")
+    template_count = fields.Integer(string="Templates Count", compute='_compute_template_count')
+
+    def _compute_template_count(self):
+        for auth in self:
+            auth.template_count = len(auth.template_ids)
 
     def get_oauth(self):
         resp = requests.post(f'{self.base_url}/oauth/access_token', json={
@@ -42,3 +50,16 @@ class SendpulseAuth(Model):
     @property
     def base_url(self):
         return "https://api.sendpulse.com"
+
+    def action_view_templates(self):
+        """View templates associated with this auth"""
+        return {
+            'name': 'SendPulse Templates',
+            'type': 'ir.actions.act_window',
+            'res_model': 'sendpulse.template',
+            'view_mode': 'list,form',
+            'domain': [('sendpulse_chatbot_id', '=', self.id)],
+            'context': {
+                'default_sendpulse_auth_id': self.id,
+            }
+        }

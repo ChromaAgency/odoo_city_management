@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sendpulse_composer_view_form" model="ir.ui.view">
+        <field name="name">sendpulse.composer.view.form</field>
+        <field name="model">sendpulse.composer</field>
+        <field name="arch" type="xml">
+            <form string="Send WhatsApp via SendPulse">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="res_model" invisible="1"/>
+                            <field name="res_ids" invisible="1"/>
+                            <field name="batch_mode" invisible="1"/>
+                            <field name="has_variables" invisible="1"/>
+                            
+                            <field name="template_id" 
+                                   options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"
+                                   required="1"/>
+                            <field name="phone" invisible="batch_mode" required="not batch_mode"/>
+                        </group>
+                        <group>
+                            <!-- Empty group for balance -->
+                        </group>
+                    </group>
+                    
+                    <!-- Variables section - only show if template has variables -->
+                    <group string="Template Variables" invisible="not has_variables" col="1">
+                        <div class="alert alert-info" role="alert">
+                            <strong>Variables:</strong> You can customize the values below. If left empty, the system will use the actual values from the record.
+                        </div>
+                        <field name="variable_ids" nolabel="1">
+                            <list editable="bottom" create="false" delete="false">
+                                <field name="name" string="Variable" readonly="1" width="30%"/>
+                                <field name="demo_value" string="Example" readonly="1" width="25%"/>
+                                <field name="value" string="Custom Value" placeholder="Leave empty to use record data" width="45%"/>
+                                <field name="template_variable_id" column_invisible="1"/>
+                                <field name="sequence" column_invisible="1"/>
+                                <field name="field_path" column_invisible="1"/>
+                            </list>
+                        </field>
+                    </group>
+                    
+                    <group string="Preview" col="1">
+                        <field name="preview_message" widget="html" nolabel="1" readonly="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Send Message" 
+                            type="object" 
+                            class="oe_highlight" 
+                            name="action_send_whatsapp"/>
+                    <button string="Cancel" 
+                            special="cancel" 
+                            data-hotkey="z" 
+                            class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open composer -->
+    <record id="action_sendpulse_composer" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp via SendPulse</field>
+        <field name="res_model">sendpulse.composer</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

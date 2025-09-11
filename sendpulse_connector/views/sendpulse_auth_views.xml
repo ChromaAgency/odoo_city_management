@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- SendPulse Auth Form View -->
+    <record id="sendpulse_auth_view_form" model="ir.ui.view">
+        <field name="name">sendpulse.auth.view.form</field>
+        <field name="model">sendpulse.auth</field>
+        <field name="arch" type="xml">
+            <form string="SendPulse Authentication">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_templates"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-list">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Templates</span>
+                                <field name="template_count" class="o_stat_value"/>
+                            </div>
+                        </button>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="client_id"/>
+                            <field name="client_secret" password="True"/>
+                        </group>
+                        <group>
+                            <field name="token" readonly="1"/>
+                            <field name="token_type" readonly="1"/>
+                            <field name="token_exp" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <div class="oe_clear">
+                        <button name="get_oauth" string="Get Token" type="object" class="oe_highlight"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- SendPulse Auth List View -->
+    <record id="sendpulse_auth_view_list" model="ir.ui.view">
+        <field name="name">sendpulse.auth.view.list</field>
+        <field name="model">sendpulse.auth</field>
+        <field name="arch" type="xml">
+            <list string="SendPulse Authentication">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="token_exp"/>
+                <field name="template_count"/>
+            </list>
+        </field>
+    </record>
+</odoo>
