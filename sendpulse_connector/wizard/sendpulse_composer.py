@@ -144,13 +144,13 @@ class SendpulseComposer(models.TransientModel):
             # Show results
             sent_count = len(messages.filtered(lambda m: m.state == 'sent'))
             failed_count = len(messages.filtered(lambda m: m.state == 'failed'))
+            return {'type': 'ir.actions.act_window_close'}
             if sent_count > 0:
                 message = _("Successfully sent %s messages") % sent_count
                 if failed_count > 0:
                     message += _(", %s messages failed") % failed_count
                     
                     # Close the wizard
-                    return {'type': 'ir.actions.act_window_close'}
                 else:
                     raise UserError(_('All messages failed to send %s' % response))
                     

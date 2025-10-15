@@ -73,9 +73,9 @@ class WebhookController(Controller):
             try:
                 action = data["action"]
                 d = data["data"]
-                if "category_id" in d:
+                if "category_id" in d and d.get('category_id'):
                     d['category_id'] = int(d.pop("category_id"))
-                if "subcategory_id" in d:
+                if "subcategory_id" in d and d.get('subcategory_id'):
                     d['subcategory_id'] = int(d.pop("subcategory_id"))
                 response = call_webhook_action(action, d)
             except KeyError:

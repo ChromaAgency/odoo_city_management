@@ -41,8 +41,10 @@ class CityReport(Model):
     _name = "city.report"
     _description = _("City Reports")
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = "create_date desc"
 
     name = Char(string=_("Name"), required=True, copy=False)
+    satisfaction = Integer(string="Satisfacción")
     partner_id = Many2one(comodel_name="res.partner", string=_("Partner"))
     report_address = Char(string=_("Report Address"), copy=False)
     report_latitude = Char(string=_("Report Latitude"), copy=False)
