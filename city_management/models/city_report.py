@@ -1,21 +1,24 @@
+import base64
 from odoo.api import model
 from odoo.models import Model
-from odoo.fields import Char, Text, Integer, Date, Selection, Many2one, One2many, Boolean
-from odoo import api, fields, models, _
+from odoo.fields import Binary, Char, Integer, Selection, Many2one, One2many, Float, Boolean, Text, Selection
+from odoo import  _
 import random
 import string
 import logging
+from urllib.parse import urlparse
+import requests
 
 _logger = logging.getLogger(__name__)
 
 REPORT_STATES = [
-    ("draft", _("Draft")),
-    ("pending", _("Pending")),
-    ("in_progress", _("In Progress")),
-    ("approved", _("Approved")),
-    ("rejected", _("Rejected")),
-    ("done", _("Done")),
-    ("cancel", _("Cancelled")),
+    ("draft", _("Borrador")),
+    ("pending", _("Pendiente")),
+    ("in_progress", _("En progreso")),
+    ("approved", _("Aprobado")),
+    ("rejected", _("Rechazado")),
+    ("done", _("Hecho")),
+    ("cancel", _("Cancelado")),
 ]
 
 def get_random_letter():
@@ -29,6 +32,7 @@ def get_random_string_with(func, length):
 
 def get_name_with_rand_letters_and_numbers(rand_numbers:int=3,rand_letters:int=4 ):
     return f"{get_random_string_with(get_random_number, length=rand_numbers)}{get_random_string_with(get_random_letter, length=rand_letters)}"
+    
 def get_vals_as_list(vals):
     if isinstance(vals, dict):
         vals = [vals]
@@ -37,13 +41,19 @@ class CityReport(Model):
     _name = "city.report"
     _description = _("City Reports")
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = "create_date desc"
 
     name = Char(string=_("Name"), required=True, copy=False)
+    satisfaction = Integer(string="Satisfacción")
     partner_id = Many2one(comodel_name="res.partner", string=_("Partner"))
     report_address = Char(string=_("Report Address"), copy=False)
+    report_latitude = Char(string=_("Report Latitude"), copy=False)
+    report_longitude = Char(string=_("Report Longitude"), copy=False)
     mobile = Char(string=_("Report mobile"))
     note = Char(string=_("Notas"), copy=False)
-    user_attachment_link = Char(string=_("Link Imagen del Reporte"), copy=False)
+    user_attachment_link = Char(string=_("Link Imagen del Reporte"), compute="_compute_user_attachment_link", inverse="_inverse_user_attachment_link", copy=False)
+    user_attachment_filename = Char(string=_("Nombre del archivo"), copy=False)
+    user_attachment = Binary(string=_("Link Imagen del Reporte"), copy=False)
     state = Selection(REPORT_STATES, default="draft", copy=False)
     cancel_reason = Many2one(comodel_name="city.report.cancel_reason", string=_("Cancel Reason"), copy=False)
     category_id = Many2one(comodel_name="city.report.category", string=_("Category"), copy=False, related="subcategory_id.parent_id", store=True)
@@ -51,6 +61,22 @@ class CityReport(Model):
     user_id = Many2one(comodel_name="res.users", string=_("Usuario responsable"), copy=False)
     progress = Integer(string=_("Progress"), copy=False)
     state_log_ids = One2many(comodel_name="city.report.state.log", inverse_name="report_id", string=_("State Logs"), copy=False)
+    solve_time = Float(string=_("Tiempo de respuesta (Días)"), copy=False)
+    resolution = Char(string=_("Resolución"), copy=False)
+
+    def _compute_user_attachment_link(self):
+        for rec in self:
+            if rec.user_attachment:
+                rec.user_attachment_link = f""
+            else:
+                rec.user_attachment_link = False
+
+    def _inverse_user_attachment_link(self):
+        for rec in self:
+            if rec.user_attachment_link:
+                url = rec.user_attachment_link
+                rec.user_attachment_filename = urlparse(url).path.split("/")[-1]
+                rec.user_attachment = self.fetch_image_from_url(url)
 
     def default_get(self, fields_list):
         vals = super().default_get(fields_list)
@@ -84,6 +110,12 @@ class CityReport(Model):
     def mark_as_cancel(self):
         return self._trigger_cancel_wizard("cancel")
 
+    def write_from_cancel_wizard(self, reason):
+        return self.write({
+            "cancel_reason":reason,
+            "state": self._context.get("state", "cancel")
+                    })
+
     def mark_as_rejected(self):
         return self._trigger_cancel_wizard("rejected")
 
@@ -106,15 +138,17 @@ class CityReport(Model):
     
     def _send_new_report_email(self):
         template = self.env.ref("city_management.send_mail_to_user")
-        template.send_mail(self.id, force_send=True)
+        template.send_mail(self.id, force_send=True, email_values=dict(subtype_id=1))
 
     @model
     def create(self, vals):
         vals = self._get_vals_with_user_id(vals)
         vals = self._generate_log_from_vals(vals)
-        if "state" in vals and vals["state"] == "pending":
-            self._send_new_report_email()
-        return super().create(vals)
+        recs = super().create(vals)
+        for rec in recs:
+            if rec.state == "pending":
+                rec._send_new_report_email()
+        return recs
     
     def write(self, vals):
         vals = self._get_vals_with_user_id(vals)
@@ -124,3 +158,33 @@ class CityReport(Model):
         if "state" in vals and vals["state"] == "pending":
             self._send_new_report_email()
         return super().write(vals)
+
+
+    def fetch_image_from_url(self, url):
+        """
+        Gets an image from a URL and converts it to an Odoo friendly format
+        so that we can store it in a Binary field.
+        :param url: The URL to fetch.
+        :return: Returns a base64 encoded string.
+        """
+        data = ''
+
+        try:
+   
+            data = base64.b64encode(requests.get(url.strip()).content).replace(b'\n', b'')
+        except Exception as e:
+            _logger.warn('There was a problem requesting the image from URL %s' % url)
+            logging.exception(e)
+
+        return data
+        
+    neighbour_id = Many2one(comodel_name="res.partner", string=_("Vecino"))
+    citizen_intention_id = Many2one(comodel_name="citizen.intention", string=_("Intención Ciudadana"))
+    feeling = Selection(string=_("Sentimiento"),  related="citizen_intention_id.feeling", store=True)
+    gender = Selection(related='neighbour_id.gender', string="Sexo", store=True)
+    age = Integer(related='neighbour_id.age', string="Edad", store=True)
+    marital_status = Selection(related='neighbour_id.marital_status', string="Estado Civil", store=True)
+    dependent_children = Integer(related='neighbour_id.dependent_children', string="Hijos a Cargo", store=True)
+    satisfaction_level = Selection(related='neighbour_id.satisfaction_level', string="Nivel de Satisfacción", store=True)
+    expressed_feelings = Text(related='neighbour_id.expressed_feelings', string="Sentimientos Expresados", store=True)
+    willingness_for_volunteering = Boolean(related='neighbour_id.willingness_for_volunteering', string="Disposición al Voluntariado o Participación Ciudadana", store=True)

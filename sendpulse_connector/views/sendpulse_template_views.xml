@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- SendPulse Template Views -->
+    <record id="sendpulse_template_view_list" model="ir.ui.view">
+        <field name="name">sendpulse.template.view.list</field>
+        <field name="model">sendpulse.template</field>
+        <field name="arch" type="xml">
+            <list string="SendPulse WhatsApp Templates">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="template_name"/>
+                <field name="model"/>
+                <field name="status" decoration-success="status == 'approved'" decoration-info="status == 'draft'" decoration-danger="status == 'rejected'"/>
+                <field name="active"/>
+                <field name="messages_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sendpulse_message_view_search" model="ir.ui.view">
+        <field name="name">sendpulse.message.view.search</field>
+        <field name="model">sendpulse.message</field>
+        <field name="arch" type="xml">
+            <search string="SendPulse Messages">
+                <field name="phone"/>
+                <field name="template_id"/>
+                <field name="res_model"/>
+                <separator/>
+                <filter name="sent" string="Sent" domain="[('state', '=', 'sent')]"/>
+                <filter name="delivered" string="Delivered" domain="[('state', '=', 'delivered')]"/>
+                <filter name="failed" string="Failed" domain="[('state', '=', 'failed')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Template" name="group_by_template" context="{'group_by': 'template_id'}"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="sendpulse_message_action" model="ir.actions.act_window">
+        <field name="name">SendPulse WhatsApp Messages</field>
+        <field name="res_model">sendpulse.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="sendpulse_message_view_search"/>
+        <field name="context">{'search_default_sent': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No WhatsApp messages sent yet
+            </p>
+            <p>
+                Messages sent via SendPulse will appear here with their delivery status.
+            </p>
+        </field>
+    </record>
+    <record id="sendpulse_template_view_form" model="ir.ui.view">
+        <field name="name">sendpulse.template.view.form</field>
+        <field name="model">sendpulse.template</field>
+        <field name="arch" type="xml">
+            <form string="SendPulse WhatsApp Template">
+                <header>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(sendpulse_message_action)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-envelope"
+                                context="{'search_default_template_id': id}">
+                            <field name="messages_count" widget="statinfo" string="Messages"/>
+                        </button>
+                    </div>
+                    
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                    
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="template_name"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="sendpulse_chatbot_id"/>
+                            <field name="model_id"/>
+                            <field name="phone_field"/>
+                            <field name="language_code"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page name="content" string="Content">
+                            <group>
+                                <field name="header_text" placeholder="Optional header text"/>
+                                <field name="body" widget="html" placeholder="Template body (use {{variable_name}} for dynamic content)"/>
+                                <field name="footer_text" placeholder="Optional footer text"/>
+                            </group>
+                        </page>
+                        
+                        <page name="variables" string="Variables">
+                            <field name="variable_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="field_path"/>
+                                    <field name="demo_value"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+              
+            </form>
+        </field>
+    </record>
+
+    <record id="sendpulse_template_view_search" model="ir.ui.view">
+        <field name="name">sendpulse.template.view.search</field>
+        <field name="model">sendpulse.template</field>
+        <field name="arch" type="xml">
+            <search string="SendPulse Templates">
+                <field name="name"/>
+                <field name="template_name"/>
+                <field name="model"/>
+                <separator/>
+                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="approved" string="Approved" domain="[('status', '=', 'approved')]"/>
+                <filter name="draft" string="Draft" domain="[('status', '=', 'draft')]"/>
+                <filter name="rejected" string="Rejected" domain="[('status', '=', 'rejected')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                    <filter string="Model" name="group_by_model" context="{'group_by': 'model'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="sendpulse_template_action" model="ir.actions.act_window">
+        <field name="name">SendPulse WhatsApp Templates</field>
+        <field name="res_model">sendpulse.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="sendpulse_template_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first SendPulse WhatsApp template
+            </p>
+            <p>
+                Templates allow you to send structured WhatsApp messages via SendPulse API.
+                You can use variables to personalize your messages with contact information.
+            </p>
+        </field>
+    </record>
+
+    <!-- SendPulse Message Views -->
+    <record id="sendpulse_message_view_list" model="ir.ui.view">
+        <field name="name">sendpulse.message.view.list</field>
+        <field name="model">sendpulse.message</field>
+        <field name="arch" type="xml">
+            <list string="SendPulse WhatsApp Messages" create="false">
+                <field name="create_date"/>
+                <field name="template_id"/>
+                <field name="phone"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <field name="state" decoration-success="state == 'sent'" decoration-info="state == 'delivered'" decoration-warning="state == 'draft'" decoration-danger="state == 'failed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sendpulse_message_view_form" model="ir.ui.view">
+        <field name="name">sendpulse.message.view.form</field>
+        <field name="model">sendpulse.message</field>
+        <field name="arch" type="xml">
+            <form string="SendPulse WhatsApp Message" create="false" edit="false">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="template_id"/>
+                            <field name="phone"/>
+                            <field name="res_model"/>
+                            <field name="res_id"/>
+                        </group>
+                        <group>
+                            <field name="create_date"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Message Content">
+                        <field name="message" widget="html" nolabel="1"/>
+                    </group>
+                    
+                    <group string="Response Details" invisible="not sendpulse_response">
+                        <field name="sendpulse_response" widget="text" nolabel="1"/>
+                    </group>
+                    
+                    <group string="Error Details" invisible="not error_message">
+                        <field name="error_message" widget="text" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+</odoo>

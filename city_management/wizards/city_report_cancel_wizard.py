@@ -12,8 +12,5 @@ class CityReport(TransientModel):
     report_id = Many2one("city.report", string=_("Report"), required=True)
 
     def cancel_report(self):
-        self.report_id.write({
-            "cancel_reason":self.cancel_reason_id,
-            "state": self._context.get("state", "cancel")
-                              })
+        self.report_id.write_from_cancel_wizard(self.cancel_reason_id)
         return True

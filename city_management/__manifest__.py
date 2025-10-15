@@ -20,11 +20,21 @@
         'data/city.report.cancel_reason.xml',
         'views/city.report.xml',
         'views/city.report.category.xml',
+        'security/ir.module.category.xml',
+        'security/res.groups.xml',
+        'security/ir.rule.xml',
         'security/ir.model.access.csv',
 
         'wizards/city_report_cancel_wizard.xml',
+        'views/res_partner_neighbors_view.xml',
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
     ],
+    'assets': {
+        'web.assets_backend': [
+            'city_management/static/src/img/logo_left.png',
+            'city_management/static/src/img/qr.png',
+        ],
+    },
 }

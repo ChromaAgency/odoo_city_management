@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="city_report_form_inherit_city_management_maps" model="ir.ui.view">
+        <field name="name">city.report.view.form.inherit</field>
+        <field name="model">city.report</field>
+        <field name="inherit_id" ref="city_management.city_report_view_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button string="Geocode" name="geocode_report_location" type="object" class="oe_highlight" />
+            </header>
+        </field>
+    </record>
+
+</odoo>

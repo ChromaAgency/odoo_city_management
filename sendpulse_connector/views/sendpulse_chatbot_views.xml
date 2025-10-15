@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- SendPulse Chatbot Form View -->
+    <record id="sendpulse_chatbot_view_form" model="ir.ui.view">
+        <field name="name">sendpulse.chatbot.view.form</field>
+        <field name="model">sendpulse.chatbot</field>
+        <field name="arch" type="xml">
+            <form string="SendPulse Chatbot">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_templates"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-list-alt">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Templates</span>
+                                <field name="template_count" class="o_stat_value"/>
+                            </div>
+                        </button>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="bot_id"/>
+                            <field name="bot_type"/>
+                        </group>
+                        <group>
+                            <field name="auth_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- SendPulse Chatbot List View -->
+    <record id="sendpulse_chatbot_view_list" model="ir.ui.view">
+        <field name="name">sendpulse.chatbot.view.list</field>
+        <field name="model">sendpulse.chatbot</field>
+        <field name="arch" type="xml">
+            <list string="SendPulse Chatbots">
+                <field name="name"/>
+                <field name="bot_id"/>
+                <field name="bot_type"/>
+                <field name="auth_id"/>
+                <field name="template_count"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- SendPulse Chatbot Search View -->
+    <record id="sendpulse_chatbot_view_search" model="ir.ui.view">
+        <field name="name">sendpulse.chatbot.view.search</field>
+        <field name="model">sendpulse.chatbot</field>
+        <field name="arch" type="xml">
+            <search string="SendPulse Chatbots">
+                <field name="name"/>
+                <field name="bot_id"/>
+                <field name="bot_type"/>
+                <field name="auth_id"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Bot Type" name="group_by_bot_type" context="{'group_by': 'bot_type'}"/>
+                    <filter string="Authentication" name="group_by_auth" context="{'group_by': 'auth_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for SendPulse Chatbot -->
+    <record id="sendpulse_chatbot_action_new" model="ir.actions.act_window">
+        <field name="name">SendPulse Chatbots</field>
+        <field name="res_model">sendpulse.chatbot</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="sendpulse_chatbot_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first SendPulse chatbot
+            </p>
+            <p>
+                Chatbots allow you to send WhatsApp messages and use templates
+                through the SendPulse API integration.
+            </p>
+        </field>
+    </record>
+</odoo>

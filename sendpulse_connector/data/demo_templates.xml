@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Demo SendPulse Chatbot (Note: auth_id should be set manually to an existing auth record) -->
+        <record id="demo_sendpulse_chatbot" model="sendpulse.chatbot">
+            <field name="name">Demo WhatsApp Chatbot</field>
+            <field name="bot_id">demo_bot_123</field>
+            <field name="bot_type">whatsapp</field>
+            <!-- Note: auth_id should be created manually -->
+        </record>
+
+        <!-- Demo SendPulse Templates -->
+        <record id="template_welcome_partner" model="sendpulse.template">
+            <field name="name">Partner Welcome Message</field>
+            <field name="template_name">partner_welcome</field>
+            <field name="sequence">10</field>
+            <field name="sendpulse_chatbot_id" ref="demo_sendpulse_chatbot"/>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="phone_field">mobile</field>
+            <field name="language_code">en</field>
+            <field name="status">approved</field>
+            <field name="body">Hello {{name}}, welcome to our city management system! 
+We're glad to have you with us. If you need any assistance, please don't hesitate to contact us.</field>
+            <field name="header_text">Welcome!</field>
+            <field name="footer_text">Best regards, City Management Team</field>
+        </record>
+
+        <record id="template_report_notification" model="sendpulse.template">
+            <field name="name">Report Status Notification</field>
+            <field name="template_name">report_notification</field>
+            <field name="sequence">20</field>
+            <field name="sendpulse_chatbot_id" ref="demo_sendpulse_chatbot"/>
+            <field name="model_id" ref="city_management.model_city_report"/>
+            <field name="phone_field">partner_id.mobile</field>
+            <field name="language_code">es</field>
+            <field name="status">approved</field>
+            <field name="body">Dear {{partner_id.name}}, 
+Your report "{{name}}" has been updated. 
+Current status: {{state}}
+Reference: {{reference}}</field>
+            <field name="header_text">Report Update</field>
+            <field name="footer_text">Thank you for your collaboration</field>
+        </record>
+
+        <!-- Demo Template Variables -->
+        <record id="var_partner_name" model="sendpulse.template.variable">
+            <field name="template_id" ref="template_welcome_partner"/>
+            <field name="name">name</field>
+            <field name="field_path">name</field>
+            <field name="sequence">10</field>
+            <field name="demo_value">John Doe</field>
+        </record>
+
+        <record id="var_report_name" model="sendpulse.template.variable">
+            <field name="template_id" ref="template_report_notification"/>
+            <field name="name">name</field>
+            <field name="field_path">name</field>
+            <field name="sequence">10</field>
+            <field name="demo_value">Street Light Issue</field>
+        </record>
+
+        <record id="var_report_state" model="sendpulse.template.variable">
+            <field name="template_id" ref="template_report_notification"/>
+            <field name="name">state</field>
+            <field name="field_path">state</field>
+            <field name="sequence">20</field>
+            <field name="demo_value">In Progress</field>
+        </record>
+
+        <record id="var_report_reference" model="sendpulse.template.variable">
+            <field name="template_id" ref="template_report_notification"/>
+            <field name="name">reference</field>
+            <field name="field_path">reference</field>
+            <field name="sequence">30</field>
+            <field name="demo_value">REP-2024-001</field>
+        </record>
+
+        <record id="var_report_partner_name" model="sendpulse.template.variable">
+            <field name="template_id" ref="template_report_notification"/>
+            <field name="name">partner_id.name</field>
+            <field name="field_path">partner_id.name</field>
+            <field name="sequence">40</field>
+            <field name="demo_value">Jane Smith</field>
+        </record>
+    </data>
+</odoo>

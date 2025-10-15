@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sendpulse_template_user,sendpulse.template user,model_sendpulse_template,base.group_user,1,0,0,0
+access_sendpulse_template_manager,sendpulse.template manager,model_sendpulse_template,base.group_erp_manager,1,1,1,1
+access_sendpulse_template_variable_user,sendpulse.template.variable user,model_sendpulse_template_variable,base.group_user,1,0,0,0
+access_sendpulse_template_variable_manager,sendpulse.template.variable manager,model_sendpulse_template_variable,base.group_erp_manager,1,1,1,1
+access_sendpulse_message_user,sendpulse.message user,model_sendpulse_message,base.group_user,1,0,0,0
+access_sendpulse_message_manager,sendpulse.message manager,model_sendpulse_message,base.group_erp_manager,1,1,1,1
+access_sendpulse_composer_user,sendpulse.composer user,model_sendpulse_composer,base.group_user,1,1,1,1
+access_sendpulse_composer_variable_user,sendpulse.composer.variable user,model_sendpulse_composer_variable,base.group_user,1,1,1,1
+access_sendpulse_auth_user,sendpulse.auth user,model_sendpulse_auth,base.group_user,1,0,0,0
+access_sendpulse_auth_manager,sendpulse.auth manager,model_sendpulse_auth,base.group_erp_manager,1,1,1,1
+access_sendpulse_chatbot_user,sendpulse.chatbot user,model_sendpulse_chatbot,base.group_user,1,0,0,0
+access_sendpulse_chatbot_manager,sendpulse.chatbot manager,model_sendpulse_chatbot,base.group_erp_manager,1,1,1,1
