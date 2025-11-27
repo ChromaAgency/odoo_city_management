@@ -20,7 +20,7 @@ class PartnerController(Controller):
             data = json.loads(request.httprequest.data)
             _logger.info(f"Data: {data}")
             mobile = data.get('mobile')
-            partner = request.env['res.partner'].sudo().search([('mobile', '=', mobile)], limit=1)
+            partner = request.env['res.partner'].sudo().search([('phone', '=', mobile)], limit=1)
             citizen_intention = request.env['citizen.intention'].sudo()
             intention = citizen_intention.create({
                 'partner_id': partner.id,

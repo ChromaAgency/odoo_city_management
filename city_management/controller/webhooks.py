@@ -13,9 +13,9 @@ def create_report(data):
         partner_vals = neighbour
         
         partner_vals.update({
-                'mobile': mobile,
+                'phone': mobile,
             })
-        partner = request.env['res.partner'].sudo().search([('mobile', '=', mobile)], limit=1)
+        partner = request.env['res.partner'].sudo().search([('phone', '=', mobile)], limit=1)
         if not partner:
             partner = request.env['res.partner'].sudo().create(partner_vals)
         else: 

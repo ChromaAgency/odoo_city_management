@@ -303,7 +303,6 @@
                             </group>
                             <group>
                                                             <field name="email" widget="email"/>
-                                <field name="mobile" widget="phone"/>
                                 <field name="phone" widget="phone"/>
 
                                 <field name="satisfaction_level"/>
