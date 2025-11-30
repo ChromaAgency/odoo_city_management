@@ -3,7 +3,7 @@
     'category': 'Sale',
     'summary': 'Odoo module to manage cities.',
     'version': '1.0',
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'mail', 'fastapi'],
     'author': 'Chroma.',
     'website': 'https://www.chroma.agency',
     'maintainer': 'Chroma.',
