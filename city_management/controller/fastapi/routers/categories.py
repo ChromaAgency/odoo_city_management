@@ -2,7 +2,9 @@
 
 from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
+
 import logging
+from fastapi.responses import UJSONResponse
 
 from odoo.api import Environment
 from odoo.addons.fastapi.dependencies import odoo_env
@@ -14,11 +16,25 @@ _logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+def _get_category(code: str,
+    env: Annotated[Environment, Depends(odoo_env)], category_id:int=False):
+    category = env['city.report.category'].sudo().search_read(
+        [('code', '=', code), ('parent_id', '=', category_id)],
+        ["name", "code", "id"],
+        limit=1
+    )
+    
+    if not category:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Category with code '{code}' not found"
+        )
+    return CategoryResponse(result=category[0])
+
 @router.get("/code/{code}", response_model=CategoryResponse)
 def get_category_by_code(
     code: str,
     env: Annotated[Environment, Depends(odoo_env)],
-    category_id: Optional[int] = None
 ) -> CategoryResponse:
     """
     Get category by code.
@@ -31,21 +47,10 @@ def get_category_by_code(
     Returns:
         Category information
     """
-    parent_id = category_id if category_id else False
-    
-    category = env['city.report.category'].sudo().search_read(
-        [('code', '=', code), ('parent_id', '=', parent_id)],
-        ["name", "code", "id"],
-        limit=1
-    )
-    
-    if not category:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Category with code '{code}' not found"
-        )
-    
-    return CategoryResponse(result=category[0])
+    try:
+        return _get_category(code=code, env=env)
+    except HTTPException as e:
+        raise e
 
 
 @router.get("/{category_id}/subcategories/code/{code}", response_model=CategoryResponse)
@@ -65,4 +70,7 @@ def get_subcategory_by_code(
     Returns:
         Subcategory information
     """
-    return get_category_by_code(code=code, env=env, category_id=category_id)
+    try:
+        return _get_category(code=code, env=env, category_id=category_id)
+    except HTTPException as e:
+        raise e

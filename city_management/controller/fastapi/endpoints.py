@@ -3,7 +3,7 @@
 from odoo import models, fields, api
 from typing import List
 from fastapi import APIRouter
-
+from .routers import router
 
 class FastapiEndpoint(models.Model):
     """FastAPI endpoint configuration for city management"""
@@ -19,6 +19,5 @@ class FastapiEndpoint(models.Model):
         """Return routers for the city management app"""
         routers = super()._get_fastapi_routers()
         if self.app == "city_management":
-            from .routers import router
             routers.append(router)
         return routers

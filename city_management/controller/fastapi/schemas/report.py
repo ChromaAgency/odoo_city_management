@@ -20,11 +20,11 @@ class NeighbourInfo(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class ReportInfo(BaseModel):
+class Report(BaseModel):
     """Report information schema"""
     name: str
-    category_id: Optional[list] = None
-    subcategory_id: Optional[list] = None
+    category_id: Optional[int] = None
+    subcategory_id: Optional[int] = None
     state: str
     note: Optional[str] = "Sin notas adicionales"
     last_change_date: Optional[str] = ""
@@ -35,7 +35,7 @@ class ReportInfo(BaseModel):
 
 class ReportResponse(BaseModel):
     """Report response wrapper"""
-    result: ReportInfo
+    result: Report
 
 
 class ReportMessage(BaseModel):
@@ -43,7 +43,7 @@ class ReportMessage(BaseModel):
     result: str
 
 
-class ReportCreate(BaseModel):
+class ReportUpsert(BaseModel):
     """Schema for creating a report"""
     mobile: Optional[str] = None
     report_address: Optional[str] = None
@@ -54,17 +54,10 @@ class ReportCreate(BaseModel):
     subcategory_id: Optional[int] = None
     category_id: Optional[int] = None
     state: Optional[str] = "draft"
+    company_id: Optional[int] = None
     neighbour: Optional[NeighbourInfo] = None
+    id: Optional[int] = None  # For updates
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, exclude_none=True)
 
 
-class ReportUpdate(BaseModel):
-    """Schema for updating a report"""
-    report_id: int
-    state: Optional[str] = None
-    note: Optional[str] = None
-    progress: Optional[int] = None
-    resolution: Optional[str] = None
-
-    model_config = ConfigDict(from_attributes=True)

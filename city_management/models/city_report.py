@@ -63,7 +63,8 @@ class CityReport(Model):
     state_log_ids = One2many(comodel_name="city.report.state.log", inverse_name="report_id", string=_("State Logs"), copy=False)
     solve_time = Float(string=_("Tiempo de respuesta (Días)"), copy=False)
     resolution = Char(string=_("Resolución"), copy=False)
-
+    company_id = Many2one(comodel_name="res.company", string=_("Company"), default=lambda self: self.env.company, required=True)
+    
     def _compute_user_attachment_link(self):
         for rec in self:
             if rec.user_attachment:

@@ -6,6 +6,7 @@ This module provides a modern REST API for the City Management system using Fast
 
 - **Reports API**: Get report information by name or phone number
 - **Categories API**: Retrieve categories and subcategories by code
+- **Chatbot Options API**: Get formatted category lists for chatbot integration
 - **Citizen Intentions API**: Create citizen intentions
 - **Webhooks API**: Handle external webhook integrations
 
@@ -84,6 +85,42 @@ GET /api/city_management/categories/{category_id}/subcategories/code/{code}
 ```
 Returns subcategory information within a parent category.
 
+### Chatbot Options
+
+#### Get Chatbot Categories
+```
+GET /api/city_management/chatbot_options/categories
+```
+Returns all parent categories formatted for chatbot display with navigation filters.
+
+**Example Response:**
+```json
+{
+  "result": "▶️ 1 - Water Services\n▶️ 2 - Street Maintenance\n▶️ 3 - Public Lighting",
+  "filters": {
+    "maxOption": 3,
+    "minOption": 1
+  }
+}
+```
+
+#### Get Chatbot Subcategories
+```
+GET /api/city_management/chatbot_options/categories/{category_id}/subcategories
+```
+Returns subcategories for a parent category formatted for chatbot display with navigation filters.
+
+**Example Response:**
+```json
+{
+  "result": "▶️ 1 - Broken Pipe\n▶️ 2 - Low Pressure\n▶️ 3 - Water Quality",
+  "filters": {
+    "maxOption": 3,
+    "minOption": 1
+  }
+}
+```
+
 ### Citizen Intentions
 
 #### Create Citizen Intention
@@ -153,12 +190,14 @@ city_management/controller/fastapi/
 │   ├── __init__.py
 │   ├── report.py
 │   ├── category.py
+│   ├── chatbot.py
 │   ├── intention.py
 │   └── webhook.py
 └── routers/              # API route handlers
     ├── __init__.py
     ├── reports.py
     ├── categories.py
+    ├── chatbot.py
     ├── intentions.py
     └── webhooks.py
 ```
