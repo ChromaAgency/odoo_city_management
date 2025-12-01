@@ -4,7 +4,6 @@ from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 
 import logging
-from fastapi.responses import UJSONResponse
 
 from odoo.api import Environment
 from odoo.addons.fastapi.dependencies import odoo_env
