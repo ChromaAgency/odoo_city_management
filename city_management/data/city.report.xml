@@ -8,6 +8,7 @@
     <menuitem
         id="city_report_menu"
         name="Reportes"
+        web_icon="city_management,static/description/icon.png"
         action="city_report_action"
         sequence="10"/>
     

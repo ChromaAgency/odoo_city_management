@@ -64,6 +64,7 @@
                         <group name="category">
                             <field name="category_id" />
                             <field name="subcategory_id" />
+                            <field name="company_id" />
                         </group>
                         <group name="contact_info">
                             <field name="report_address" />
@@ -81,7 +82,7 @@
                             <field name="write_date" />
                             <field name="user_attachment_link" />
                             <field name="user_attachment_filename" invisible="1"/>
-                            <field name="user_attachment" filename="user_attachment_filename" />
+                            <field name="user_attachment" filename="user_attachment_filename" widget="image"/>
                         </group>
                     </group>
                     <notebook>

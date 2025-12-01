@@ -392,7 +392,7 @@
                 </p>
             </field>
         </record>
-        <menuitem id="menu_city_management_root" name="Gestión Ciudadana" sequence="10"/>
+        <menuitem id="menu_city_management_root" name="Gestión Ciudadana" sequence="10" web_icon="contacts,static/description/icon.png"/>
         <menuitem id="menu_neighbors" name="Vecinos" parent="menu_city_management_root" action="action_res_partner_neighbors" sequence="1"/>
 
     </data>

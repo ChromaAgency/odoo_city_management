@@ -8,9 +8,9 @@
     'website': 'https://www.chroma.agency',
     'maintainer': 'Chroma.',
     'application': True,
-
+    'icon': 'static/description/icon.png',
     'description': """
-    Description text
+    Odoo module to manage cities
     """,
     # data files always loaded at installation
     'data': [
