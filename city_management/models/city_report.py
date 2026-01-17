@@ -64,7 +64,11 @@ class CityReport(Model):
     solve_time = Float(string=_("Tiempo de respuesta (Días)"), copy=False)
     resolution = Char(string=_("Resolución"), copy=False)
     company_id = Many2one(comodel_name="res.company", string=_("Company"), default=lambda self: self.env.company, required=True)
-    
+
+    def _can_return_content(self, field_name=None, access_token=None):
+        if field_name == "user_attachment":
+            return True
+        return super()._can_return_content(field_name, access_token)
     def _compute_user_attachment_link(self):
         for rec in self:
             if rec.user_attachment:
