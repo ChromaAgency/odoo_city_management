@@ -4,3 +4,4 @@ from . import city_report_state_log
 from . import city_report
 from . import citizen_intention
 from . import res_partner
+from . import ir_binary
